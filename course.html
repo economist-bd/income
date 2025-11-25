@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভবিষ্যতের কোর্সসমূহ</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"Orbitron"', 'monospace'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            pink: '#ff0055',
+                            yellow: '#fcee0a',
+                        },
+                        dark: {
+                            bg: '#050510',
+                            card: 'rgba(20, 20, 35, 0.6)',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 4s linear infinite',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050510;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Circuit Board Background Pattern */
+        .circuit-bg {
+            background-image: radial-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Course Card Styling */
+        .course-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(188, 19, 254, 0.5);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
+        }
+
+        /* Scanner Effect on Hover */
+        .course-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.2), transparent);
+            transform: translateY(-100%);
+            transition: none;
+        }
+        
+        .course-card:hover::after {
+            animation: scan 1.5s linear infinite;
+        }
+
+        /* Category Tabs */
+        .tab-btn.active {
+            background: linear-gradient(90deg, #00f3ff, #bc13fe);
+            color: black;
+            font-weight: bold;
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative flex flex-col items-center pb-20">
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 circuit-bg pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-neon-blue/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+
+    <main class="relative z-10 w-full max-w-7xl px-4 pt-12 md:pt-20">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                <span class="text-white">এক্সপ্লোর</span> 
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-blue to-neon-purple animate-pulse-slow">ফিউচার স্কিলস</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                আগামী দিনের প্রযুক্তি আয়ত্ত করুন। এআই থেকে ব্লকচেইন - আপনার ক্যারিয়ার গড়ার সকল টুলস এখানে।
+            </p>
+            
+            <!-- Search Bar -->
+            <div class="mt-8 relative max-w-md mx-auto group">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg blur opacity-30 group-hover:opacity-75 transition duration-500"></div>
+                <div class="relative flex items-center bg-[#0a0a16] rounded-lg p-2">
+                    <i data-lucide="search" class="w-5 h-5 text-gray-400 ml-2"></i>
+                    <input type="text" placeholder="কোর্স খুঁজুন (যেমন: Python, Web3...)" class="w-full bg-transparent border-none text-white px-4 py-2 focus:outline-none placeholder-gray-600">
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button class="tab-btn active px-6 py-2 rounded-full border border-white/10 hover:border-neon-blue transition-all text-sm uppercase tracking-wider">সব কোর্স</button>
+            <button class="tab-btn px-6 py-2 rounded-full border border-white/10 hover:border-neon-blue transition-all text-sm uppercase tracking-wider text-gray-400 hover:text-white">ডেভেলপমেন্ট</button>
+            <button class="tab-btn px-6 py-2 rounded-full border border-white/10 hover:border-neon-blue transition-all text-sm uppercase tracking-wider text-gray-400 hover:text-white">ডিজাইন</button>
+            <button class="tab-btn px-6 py-2 rounded-full border border-white/10 hover:border-neon-blue transition-all text-sm uppercase tracking-wider text-gray-400 hover:text-white">এআই & ডাটা</button>
+        </div>
+
+        <!-- Course Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Course Card 1 -->
+            <div class="course-card rounded-2xl p-6 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-blue-500/10 rounded-lg text-neon-blue">
+                        <i data-lucide="cpu" class="w-8 h-8"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-neon-blue/10 text-neon-blue text-xs font-mono rounded border border-neon-blue/20">POPULAR</span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-blue transition-colors">এআই মাস্টারক্লাস</h3>
+                <p class="text-sm text-gray-400 mb-4 line-clamp-2">
+                    মেশিন লার্নিং এবং ডিপ লার্নিং এর জগত এক্সপ্লোর করুন। নিজের এআই মডেল তৈরি করা শিখুন।
+                </p>
+                
+                <div class="flex items-center gap-4 text-xs text-gray-500 font-mono mb-6">
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ৪০ ঘণ্টা</span>
+                    <span class="flex items-center gap-1"><i data-lucide="bar-chart" class="w-3 h-3"></i> ইন্টারমিডিয়েট</span>
+                </div>
+
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#050510] flex items-center justify-center text-[10px] text-white">+2k</div>
+                    </div>
+                    <a href="#" class="text-neon-blue hover:text-white flex items-center gap-1 text-sm font-bold transition-colors">
+                        ডিটেইলস <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Course Card 2 -->
+            <div class="course-card rounded-2xl p-6 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-purple-500/10 rounded-lg text-neon-purple">
+                        <i data-lucide="layers" class="w-8 h-8"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-neon-purple/10 text-neon-purple text-xs font-mono rounded border border-neon-purple/20">NEW</span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-purple transition-colors">ফুল স্ট্যাক ওয়েব ৩.০</h3>
+                <p class="text-sm text-gray-400 mb-4 line-clamp-2">
+                    ভবিষ্যতের ইন্টারনেট তৈরি করুন। সলিডিটি, ইথেরিয়াম এবং ড্যাপস (DApps) ডেভেলপমেন্ট।
+                </p>
+                
+                <div class="flex items-center gap-4 text-xs text-gray-500 font-mono mb-6">
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ৫৫ ঘণ্টা</span>
+                    <span class="flex items-center gap-1"><i data-lucide="bar-chart" class="w-3 h-3"></i> অ্যাডভান্সড</span>
+                </div>
+
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#050510] flex items-center justify-center text-[10px] text-white">+500</div>
+                    </div>
+                    <a href="#" class="text-neon-purple hover:text-white flex items-center gap-1 text-sm font-bold transition-colors">
+                        ডিটেইলস <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+             <!-- Course Card 3 -->
+             <div class="course-card rounded-2xl p-6 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-pink-500/10 rounded-lg text-neon-pink">
+                        <i data-lucide="shield-alert" class="w-8 h-8"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-green-500/10 text-green-400 text-xs font-mono rounded border border-green-500/20">FREE</span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-pink transition-colors">ইথিক্যাল হ্যাকিং বেসিকস</h3>
+                <p class="text-sm text-gray-400 mb-4 line-clamp-2">
+                    ডিজিটাল নিরাপত্তা নিশ্চিত করতে শিখুন। নেটওয়ার্ক সিকিউরিটি এবং পেনেট্রেশন টেস্টং এর হাতেখড়ি।
+                </p>
+                
+                <div class="flex items-center gap-4 text-xs text-gray-500 font-mono mb-6">
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ২৫ ঘণ্টা</span>
+                    <span class="flex items-center gap-1"><i data-lucide="bar-chart" class="w-3 h-3"></i> বিগিনার</span>
+                </div>
+
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#050510] flex items-center justify-center text-[10px] text-white">+8k</div>
+                    </div>
+                    <a href="#" class="text-neon-pink hover:text-white flex items-center gap-1 text-sm font-bold transition-colors">
+                        ডিটেইলস <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Course Card 4 -->
+            <div class="course-card rounded-2xl p-6 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-yellow-500/10 rounded-lg text-neon-yellow">
+                        <i data-lucide="pen-tool" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-yellow transition-colors">ফিউচারিস্টিক UI/UX ডিজাইন</h3>
+                <p class="text-sm text-gray-400 mb-4 line-clamp-2">
+                    গ্লাস-মর্ফিজম, ৩ডি ইন্টারফেস এবং আধুনিক ওয়েব ডিজাইন ট্রেন্ডস শিখুন।
+                </p>
+                
+                <div class="flex items-center gap-4 text-xs text-gray-500 font-mono mb-6">
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ৩৫ ঘণ্টা</span>
+                    <span class="flex items-center gap-1"><i data-lucide="bar-chart" class="w-3 h-3"></i> অল লেভেল</span>
+                </div>
+
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#050510]"></div>
+                         <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#050510] flex items-center justify-center text-[10px] text-white">+1k</div>
+                    </div>
+                    <a href="#" class="text-neon-yellow hover:text-white flex items-center gap-1 text-sm font-bold transition-colors">
+                        ডিটেইলস <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Course Card 5 -->
+            <div class="course-card rounded-2xl p-6 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-teal-500/10 rounded-lg text-teal-400">
+                        <i data-lucide="database" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">বিগ ডাটা অ্যানালিটিক্স</h3>
+                <p class="text-sm text-gray-400 mb-4 line-clamp-2">
+                    বিশাল ডাটা সেট থেকে ইনসাইট বের করুন। SQL, Python এবং ভিজ্যুয়ালাইজেশন টুলস।
+                </p>
+                
+                <div class="flex items-center gap-4 text-xs text-gray-500 font-mono mb-6">
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ৪৫ ঘণ্টা</span>
+                    <span class="flex items-center gap-1"><i data-lucide="bar-chart" class="w-3 h-3"></i> ইন্টারমিডিয়েট</span>
+                </div>
+
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#050510]"></div>
+                         <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#050510] flex items-center justify-center text-[10px] text-white">+3k</div>
+                    </div>
+                    <a href="#" class="text-teal-400 hover:text-white flex items-center gap-1 text-sm font-bold transition-colors">
+                        ডিটেইলস <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Course Card 6 -->
+            <div class="course-card rounded-2xl p-6 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-red-500/10 rounded-lg text-red-500">
+                        <i data-lucide="gamepad-2" class="w-8 h-8"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-red-500/10 text-red-500 text-xs font-mono rounded border border-red-500/20">HOT</span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-red-500 transition-colors">গেম ডেভেলপমেন্ট (Unreal 5)</h3>
+                <p class="text-sm text-gray-400 mb-4 line-clamp-2">
+                    নিজের স্বপ্নের গেম তৈরি করুন। ব্লুপ্রিন্ট থেকে শুরু করে মাল্টিপ্লেয়ার গেম লজিক।
+                </p>
+                
+                <div class="flex items-center gap-4 text-xs text-gray-500 font-mono mb-6">
+                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ৬০ ঘণ্টা</span>
+                    <span class="flex items-center gap-1"><i data-lucide="bar-chart" class="w-3 h-3"></i> অ্যাডভান্সড</span>
+                </div>
+
+                <div class="flex items-center justify-between mt-auto">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-[#050510]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#050510]"></div>
+                         <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#050510] flex items-center justify-center text-[10px] text-white">+4k</div>
+                    </div>
+                    <a href="#" class="text-red-500 hover:text-white flex items-center gap-1 text-sm font-bold transition-colors">
+                        ডিটেইলস <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- CTA Bottom -->
+        <div class="mt-20 text-center">
+            <a href="https://economist-bd.github.io/income/" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-neon-blue transition-colors duration-300">
+                সকল কোর্স আনলক করুন
+                <i data-lucide="unlock" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Script to Initialize Icons and Basic Interactivity -->
+    <script>
+        lucide.createIcons();
+
+        // Simple Tab Switch Logic (Visual Only for Demo)
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active', 'text-black', 'font-bold', 'bg-gradient-to-r', 'from-neon-blue', 'to-neon-purple'));
+                tabs.forEach(t => t.classList.add('text-gray-400'));
+                tabs.forEach(t => t.style.borderColor = "rgba(255, 255, 255, 0.1)");
+                
+                tab.classList.remove('text-gray-400');
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
