@@ -1,0 +1,319 @@
+import React, { useState, useRef } from 'react';
+import { Award, Download, RefreshCcw, CheckCircle, Cpu, Zap, Share2 } from 'lucide-react';
+
+export default function CertificateApp() {
+  const [showCertificate, setShowCertificate] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    course: 'প্রফেশনাল ওয়েব ডেভেলপমেন্ট',
+    instructor: 'ইকোনমিস্ট বিডি টিম',
+    date: new Date().toISOString().split('T')[0],
+    id: 'ECO-' + Math.floor(100000 + Math.random() * 900000)
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleGenerate = (e) => {
+    e.preventDefault();
+    if (formData.name && formData.course) {
+      setShowCertificate(true);
+    }
+  };
+
+  const handleReset = () => {
+    setShowCertificate(false);
+    setFormData({
+      ...formData,
+      name: '',
+      id: 'ECO-' + Math.floor(100000 + Math.random() * 900000)
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-cyan-400 font-sans selection:bg-cyan-500 selection:text-black overflow-x-hidden">
+      {/* Global Styles for Animations and Print */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
+
+        @keyframes scanline {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
+        }
+        
+        .scanline::before {
+          content: " ";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+          z-index: 2;
+          background-size: 100% 2px, 3px 100%;
+          pointer-events: none;
+        }
+
+        .hologram-effect {
+          background: linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(0,0,0,0) 50%, rgba(168,85,247,0.1) 100%);
+          box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), inset 0 0 20px rgba(6, 182, 212, 0.1);
+          backdrop-filter: blur(5px);
+        }
+
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #certificate-area, #certificate-area * {
+            visibility: visible;
+          }
+          #certificate-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white !important;
+            color: black !important;
+            box-shadow: none !important;
+            border: 2px solid #000 !important;
+          }
+          /* Adjust print colors to save ink but keep layout */
+          .print-black-text { color: black !important; }
+          .print-no-bg { background: none !important; }
+          .no-print { display: none !important; }
+        }
+      `}</style>
+
+      {/* Background Elements */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(8,51,68,0.4),rgba(2,6,23,1))]"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-cyan-500 rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+        {/* Grid Lines */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-5xl">
+        
+        {/* Header */}
+        <header className="flex items-center justify-between mb-12 border-b border-cyan-900/50 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-cyan-500/10 border border-cyan-500/50 rounded-lg">
+              <Cpu className="w-8 h-8 text-cyan-400" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-orbitron font-bold text-white tracking-wider">CERTIFICATE<span className="text-cyan-400">.GEN</span></h1>
+              <p className="text-xs text-cyan-600 font-mono tracking-widest">SYSTEM_VERSION_2.0</p>
+            </div>
+          </div>
+          <div className="hidden md:flex gap-4 text-xs font-mono text-cyan-700">
+            <span>SECURE_CONNECTION</span>
+            <span>ENCRYPTED</span>
+          </div>
+        </header>
+
+        {!showCertificate ? (
+          /* Input Form Section */
+          <div className="max-w-xl mx-auto">
+            <div className="bg-slate-900/80 border border-cyan-500/30 rounded-xl p-8 shadow-[0_0_30px_rgba(6,182,212,0.1)] backdrop-blur-md relative overflow-hidden group">
+              {/* Corner Accents */}
+              <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400"></div>
+              <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-400"></div>
+              <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-400"></div>
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-400"></div>
+
+              <h2 className="text-2xl font-rajdhani font-bold text-white mb-6 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-yellow-400" />
+                তথ্য পূরণ করুন
+              </h2>
+              
+              <form onSubmit={handleGenerate} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-mono text-cyan-300 mb-2">প্রাপকের নাম (Name)</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="আপনার নাম লিখুন..."
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full bg-slate-950 border border-cyan-900 text-white px-4 py-3 rounded focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all font-rajdhani text-lg placeholder-slate-700"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-mono text-cyan-300 mb-2">কোর্স / কৃতিত্ব (Course Title)</label>
+                  <input
+                    type="text"
+                    name="course"
+                    required
+                    value={formData.course}
+                    onChange={handleInputChange}
+                    className="w-full bg-slate-950 border border-cyan-900 text-white px-4 py-3 rounded focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all font-rajdhani text-lg"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-mono text-cyan-300 mb-2">তারিখ (Date)</label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={formData.date}
+                      onChange={handleInputChange}
+                      className="w-full bg-slate-950 border border-cyan-900 text-white px-4 py-3 rounded focus:outline-none focus:border-cyan-400 font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-mono text-cyan-300 mb-2">কর্তৃপক্ষ (Authority)</label>
+                    <input
+                      type="text"
+                      name="instructor"
+                      value={formData.instructor}
+                      onChange={handleInputChange}
+                      className="w-full bg-slate-950 border border-cyan-900 text-white px-4 py-3 rounded focus:outline-none focus:border-cyan-400 font-rajdhani"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-orbitron font-bold py-4 rounded relative overflow-hidden group transition-all transform hover:scale-[1.02] shadow-[0_4px_20px_rgba(6,182,212,0.4)]"
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <Award className="w-5 h-5" />
+                    সার্টিফিকেট তৈরি করুন
+                  </span>
+                  <div className="absolute top-0 left-[-100%] w-full h-full bg-white/20 skew-x-[45deg] group-hover:left-[100%] transition-all duration-700"></div>
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : (
+          /* Certificate Preview Section */
+          <div className="flex flex-col items-center animate-in fade-in zoom-in duration-500">
+            
+            {/* Actions Bar */}
+            <div className="flex gap-4 mb-8 no-print">
+              <button 
+                onClick={handlePrint}
+                className="flex items-center gap-2 px-6 py-2 bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 rounded hover:bg-cyan-500/30 transition-colors"
+              >
+                <Download className="w-4 h-4" /> ডাউনলোড / প্রিন্ট
+              </button>
+              <button 
+                onClick={handleReset}
+                className="flex items-center gap-2 px-6 py-2 bg-slate-800 text-slate-400 border border-slate-700 rounded hover:bg-slate-700 transition-colors"
+              >
+                <RefreshCcw className="w-4 h-4" /> নতুন তৈরি করুন
+              </button>
+            </div>
+
+            {/* THE CERTIFICATE */}
+            <div 
+              id="certificate-area" 
+              className="relative w-full max-w-4xl bg-slate-950 border-2 border-cyan-500/50 p-2 shadow-[0_0_50px_rgba(6,182,212,0.2)]"
+            >
+              {/* Inner Container with Glassmorphism */}
+              <div className="relative border border-cyan-400/30 p-8 md:p-12 h-full hologram-effect overflow-hidden">
+                
+                {/* Decorative Tech Elements */}
+                <div className="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-cyan-400 rounded-tl-lg"></div>
+                <div className="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-cyan-400 rounded-tr-lg"></div>
+                <div className="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-cyan-400 rounded-bl-lg"></div>
+                <div className="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-cyan-400 rounded-br-lg"></div>
+
+                <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+                
+                {/* Content */}
+                <div className="relative z-10 text-center space-y-8 print-black-text">
+                  
+                  {/* Top Badge */}
+                  <div className="flex justify-center">
+                     <div className="relative">
+                        <div className="absolute inset-0 bg-cyan-500 blur-xl opacity-40 animate-pulse rounded-full"></div>
+                        <Award className="w-20 h-20 text-cyan-400 relative z-10 print-black-text" />
+                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h1 className="text-4xl md:text-5xl font-orbitron font-bold text-white tracking-widest uppercase print-black-text" style={{ textShadow: '0 0 10px rgba(6,182,212,0.5)' }}>
+                      Certificate
+                    </h1>
+                    <p className="text-cyan-300 font-rajdhani tracking-[0.3em] text-lg print-black-text">OF COMPLETION</p>
+                  </div>
+
+                  <div className="py-8">
+                    <p className="text-slate-400 font-mono text-sm mb-4 print-black-text">THIS IS TO CERTIFY THAT</p>
+                    <h2 className="text-3xl md:text-5xl font-rajdhani font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-cyan-300 print-black-text py-2">
+                      {formData.name}
+                    </h2>
+                    <div className="w-2/3 mx-auto h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent my-6 opacity-50"></div>
+                    
+                    <p className="text-slate-400 font-mono text-sm mb-2 print-black-text">HAS SUCCESSFULLY COMPLETED THE COURSE</p>
+                    <h3 className="text-xl md:text-3xl font-rajdhani font-semibold text-cyan-200 print-black-text">
+                      {formData.course}
+                    </h3>
+                  </div>
+
+                  {/* Footer Info */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end pt-12 border-t border-cyan-500/20 mt-8">
+                    
+                    {/* Date */}
+                    <div className="text-center md:text-left">
+                      <p className="text-xs text-cyan-600 font-mono mb-1 print-black-text">DATE OF ISSUE</p>
+                      <p className="text-lg font-rajdhani text-white print-black-text">{formData.date}</p>
+                    </div>
+
+                    {/* QR / ID Area */}
+                    <div className="flex flex-col items-center justify-center">
+                       <div className="bg-white p-2 rounded">
+                          {/* Simple CSS Pattern to simulate QR */}
+                          <div className="w-16 h-16 bg-black opacity-90 grid grid-cols-4 gap-0.5">
+                             {[...Array(16)].map((_,i) => (
+                               <div key={i} className={`bg-white ${Math.random() > 0.5 ? 'opacity-100' : 'opacity-0'}`}></div>
+                             ))}
+                          </div>
+                       </div>
+                       <p className="text-[10px] text-cyan-600 font-mono mt-2 tracking-widest print-black-text">ID: {formData.id}</p>
+                    </div>
+
+                    {/* Signature */}
+                    <div className="text-center md:text-right">
+                       <div className="h-10 flex items-end justify-center md:justify-end">
+                          <span className="font-dancing-script text-2xl text-cyan-400 italic pr-4 font-mono print-black-text" style={{fontFamily: 'cursive'}}>
+                             {formData.instructor}
+                          </span>
+                       </div>
+                       <div className="h-[1px] bg-cyan-500/50 w-full mb-1"></div>
+                       <p className="text-xs text-cyan-600 font-mono print-black-text">AUTHORIZED SIGNATURE</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Scanline Effect Overlay (Hidden on Print) */}
+                <div className="absolute inset-0 pointer-events-none opacity-10 scanline no-print"></div>
+              </div>
+            </div>
+            
+            <p className="mt-8 text-slate-500 text-xs font-mono">
+              GENERATED BY ECONOMIST-BD SECURE SYSTEMS
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
