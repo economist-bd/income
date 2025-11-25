@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফিউচারিস্টিক ফিচারসমূহ</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"Orbitron"', 'monospace'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            pink: '#ff0055',
+                            green: '#0aff68',
+                        },
+                        dark: {
+                            bg: '#050510',
+                            card: 'rgba(255, 255, 255, 0.03)',
+                        }
+                    },
+                    animation: {
+                        'grid-flow': 'gridFlow 20s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        gridFlow: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(50px)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050510;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Cyber Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            perspective: 500px;
+            transform-style: preserve-3d;
+            z-index: 0;
+            mask-image: linear-gradient(to bottom, transparent 10%, black 90%);
+        }
+
+        /* Glassmorphism Feature Card */
+        .feature-card {
+            background: rgba(20, 20, 35, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(0, 243, 255, 0.2);
+        }
+
+        .feature-icon-wrapper {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .feature-card:hover .feature-icon-wrapper {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(188, 19, 254, 0.2));
+            border-color: rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050510;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bc13fe;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-neon-purple selection:text-white pb-20">
+
+    <!-- Background Grid -->
+    <div class="cyber-grid transform-gpu opacity-30"></div>
+    
+    <!-- Ambient Glows -->
+    <div class="fixed top-0 left-0 w-96 h-96 bg-neon-blue rounded-full filter blur-[120px] opacity-10 pointer-events-none"></div>
+    <div class="fixed bottom-0 right-0 w-96 h-96 bg-neon-purple rounded-full filter blur-[120px] opacity-10 pointer-events-none"></div>
+
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-16 animate-float">
+            <h2 class="text-neon-blue font-mono text-sm md:text-base tracking-[0.3em] uppercase mb-3">ফিউচারিস্টিক টেকনোলজি</h2>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                আমাদের <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-blue to-neon-purple">অত্যাধুনিক ফিচার</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg font-light">
+                প্রথাগত শিক্ষার সীমানা পেরিয়ে আমরা নিয়ে এসেছি আগামীর প্রযুক্তি। এখানে প্রতিটি ধাপ আপনাকে নিয়ে যাবে অনন্য উচ্চতায়।
+            </p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            
+            <!-- Feature 1: AI Mentorship -->
+            <div class="feature-card rounded-2xl p-8 group">
+                <div class="feature-icon-wrapper w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
+                    <i data-lucide="bot" class="w-8 h-8 text-white group-hover:text-neon-blue transition-colors"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-neon-blue transition-colors">এআই মেন্টরশিপ</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    ব্যক্তিগত এআই শিক্ষক যিনি আপনার শেখার ধরন বুঝে ২৪/৭ গাইডলাইন প্রদান করবেন। কোনো প্রশ্নই আর উত্তরহীন থাকবে না।
+                </p>
+                <div class="h-0.5 w-12 bg-gray-700 group-hover:w-full group-hover:bg-gradient-to-r from-neon-blue to-transparent transition-all duration-500"></div>
+            </div>
+
+            <!-- Feature 2: Immersive VR -->
+            <div class="feature-card rounded-2xl p-8 group">
+                <div class="feature-icon-wrapper w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
+                    <i data-lucide="glasses" class="w-8 h-8 text-white group-hover:text-neon-purple transition-colors"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-neon-purple transition-colors">ইমারসিভ VR ল্যাব</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    ভার্চুয়াল রিয়েলিটির মাধ্যমে জটিল বিষয়গুলো হাতে-কলমে শিখুন। বইয়ের পাতা থেকে সরাসরি থ্রিডি সিমুলেশনে প্রবেশ করুন।
+                </p>
+                <div class="h-0.5 w-12 bg-gray-700 group-hover:w-full group-hover:bg-gradient-to-r from-neon-purple to-transparent transition-all duration-500"></div>
+            </div>
+
+            <!-- Feature 3: Blockchain Certs -->
+            <div class="feature-card rounded-2xl p-8 group">
+                <div class="feature-icon-wrapper w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-white group-hover:text-neon-green transition-colors"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-neon-green transition-colors">সুরক্ষিত সার্টিফিকেশন</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    ব্লকচেইন প্রযুক্তিতে সংরক্ষিত সার্টিফিকেট যা সারা বিশ্বে গ্রহণযোগ্য। আপনার অর্জনের সত্যতা যাচাই করা হবে এক ক্লিকেই।
+                </p>
+                <div class="h-0.5 w-12 bg-gray-700 group-hover:w-full group-hover:bg-gradient-to-r from-neon-green to-transparent transition-all duration-500"></div>
+            </div>
+
+            <!-- Feature 4: Gamified Progress -->
+            <div class="feature-card rounded-2xl p-8 group">
+                <div class="feature-icon-wrapper w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
+                    <i data-lucide="trophy" class="w-8 h-8 text-white group-hover:text-yellow-400 transition-colors"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-yellow-400 transition-colors">গেমের মতো অগ্রগতি</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    শেখা এখন আর বোরিং নয়। লেভেল আপ করুন, ব্যাজ জিতুন এবং লিডারবোর্ডে বন্ধুদের সাথে প্রতিযোগিতা করুন।
+                </p>
+                <div class="h-0.5 w-12 bg-gray-700 group-hover:w-full group-hover:bg-gradient-to-r from-yellow-400 to-transparent transition-all duration-500"></div>
+            </div>
+
+            <!-- Feature 5: Live Holo-Classes -->
+            <div class="feature-card rounded-2xl p-8 group">
+                <div class="feature-icon-wrapper w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
+                    <i data-lucide="video" class="w-8 h-8 text-white group-hover:text-neon-pink transition-colors"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-neon-pink transition-colors">লাইভ হোলো-ক্লাস</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    শিক্ষক যেন আপনার ঘরেই উপস্থিত। হলোগ্রাফিক প্রজেকশনের মাধ্যমে রিয়েল-টাইম ক্লাসের অভিজ্ঞতা নিন।
+                </p>
+                <div class="h-0.5 w-12 bg-gray-700 group-hover:w-full group-hover:bg-gradient-to-r from-neon-pink to-transparent transition-all duration-500"></div>
+            </div>
+
+            <!-- Feature 6: Neuro-Adaptive Learning -->
+            <div class="feature-card rounded-2xl p-8 group">
+                <div class="feature-icon-wrapper w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300">
+                    <i data-lucide="brain-circuit" class="w-8 h-8 text-white group-hover:text-cyan-400 transition-colors"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">অ্যাডাপ্টিভ লার্নিং</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    আপনার মেধা ও শেখার গতির ওপর ভিত্তি করে কারিকুলাম স্বয়ংক্রিয়ভাবে পরিবর্তিত হয়। আপনার জন্য সেরা পথটিই আমরা তৈরি করি।
+                </p>
+                <div class="h-0.5 w-12 bg-gray-700 group-hover:w-full group-hover:bg-gradient-to-r from-cyan-400 to-transparent transition-all duration-500"></div>
+            </div>
+
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="mt-20 text-center">
+            <div class="inline-block p-[2px] rounded-lg bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink">
+                <a href="https://economist-bd.github.io/income/" target="_blank" class="block px-10 py-4 bg-dark-bg rounded-lg relative group overflow-hidden">
+                    <span class="absolute top-0 left-0 w-full h-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    <span class="relative text-white font-bold tracking-wider uppercase flex items-center gap-2">
+                        আজই জয়েন করুন <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </span>
+                </a>
+            </div>
+            <p class="mt-4 text-gray-500 text-sm">কোনো ক্রেডিট কার্ডের প্রয়োজন নেই • ৭ দিনের ফ্রি ট্রায়াল</p>
+        </div>
+
+    </main>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
