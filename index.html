@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="bn">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>অনলাইন আয় প্রশিক্ষণ</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Noto Sans Bengali', Arial, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .smooth-transition {
+      transition: all 0.3s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: scale(1.1);
+    }
+
+    .video-placeholder {
+      position: relative;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .play-button:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: white;
+    }
+
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-left: 25px solid #667eea;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      margin-left: 8px;
+    }
+
+    .scrolling-news {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .news-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 30s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .news-content:hover {
+      animation-play-state: paused;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div id="app-container" class="w-full"><!-- Navigation -->
+   <nav id="navbar" class="w-full shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16">
+      <div class="flex items-center space-x-3">
+       <div class="text-3xl">
+        📚
+       </div>
+       <div>
+        <h1 id="site-title" class="text-xl font-bold">অনলাইন আয় প����রশিক্ষণ কেন্দ্র</h1>
+        <p id="tagline" class="text-sm">শিখুন এবং আয় করুন</p>
+       </div>
+      </div>
+      <div class="hidden md:flex space-x-8"><a href="#home" class="smooth-transition font-medium">হোম</a> <a href="#courses" class="smooth-transition font-medium">কোর্স</a> <a href="#features" class="smooth-transition font-medium">ফিচার</a> <a href="#contact" class="smooth-transition font-medium">যোগাযোগ</a>
+      </div><button id="mobile-menu-btn" class="md:hidden text-3xl">☰</button>
+     </div>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t">
+     <div class="px-4 py-4 space-y-3"><a href="#home" class="block py-2 font-medium">হোম</a> <a href="#courses" class="block py-2 font-medium">কোর্স</a> <a href="#features" class="block py-2 font-medium">ফিচার</a> <a href="#contact" class="block py-2 font-medium">যোগাযোগ</a>
+     </div>
+    </div>
+   </nav><!-- Scrolling News Bar -->
+   <div id="news-bar" class="w-full py-3 px-4">
+    <div class="flex items-center">
+     <div class="flex items-center space-x-2 px-4 py-1 rounded font-bold mr-4 flex-shrink-0"><span class="text-xl">📢</span> <span id="news-label">সর্বশেষ খবর</span>
+     </div>
+     <div class="scrolling-news flex-1">
+      <div id="news-content" class="news-content"><span class="mx-8">🎉 নতুন ব্যাচ শুরু হচ্ছে ১৫ ডিসেম্বর - এখনই ভর্ত�� হন এবং ২০% ছাড় পান!</span> <span class="mx-8">✨ ১০,০০০+ শিক্ষার্থী ইতিমধ্য��� আমাদের সাথে সফল ক্যারিয়ার শুরু করেছেন</span> <span class="mx-8">🏆 এই মাসের সেরা শিক্ষার্থী পেয়েছেন বিশেষ পুরস্কার</span> <span class="mx-8">📚 নতুন কোর্স: "অ্যাফিলিয়েট মার্কেটিং মাস্টারি" শীঘ্রই আসছে</span>
+      </div>
+     </div>
+    </div>
+   </div><!-- Hero Section -->
+   <section id="hero" class="w-full py-10 md:py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div>
+       <div class="mb-6 p-4 rounded-lg border-2 inline-block">
+        <div class="flex items-center space-x-3"><span class="text-4xl">👨‍💻</span>
+         <div>
+          <p class="text-sm font-semibold opacity-80">প্রধান প্রশিক্ষক</p>
+          <h3 id="instructor-name" class="text-2xl font-bold">মোঃ মঞ্জুরুল হক স্যার</h3>
+          <p class="text-sm font-semibold opacity-90">(ওয়েব ডেভেলপার)</p>
+         </div>
+        </div>
+       </div>
+       <h2 id="hero-title" class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">অনলাইন থেকে আয় করতে শিখুন</h2>
+       <p id="hero-subtitle" class="text-base md:text-lg lg:text-xl mb-6 md:mb-8 opacity-90">প্রফেশনাল প্রশিক্ষকদের থেকে শিখুন এবং আপনার ক্যারিয়ার শুরু করুন। প্রি-রেকর্ডেড ভিডিও, প্র্যাকটিস ম্যাটেরিয়াল এবং সার্টিফিকেট পান।</p><button id="cta-button" class="px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg smooth-transition shadow-lg hover:shadow-xl w-full md:w-auto">এখনই শুরু করুন</button>
+      </div>
+      <div class="video-placeholder aspect-video">
+       <div class="play-button">
+        <div class="play-icon"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Stats Section -->
+   <section class="w-full py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="text-center">
+       <div class="text-4xl font-bold mb-2">
+        ���০০+
+       </div>
+       <div class="opacity-80">
+        প্রি-রেকর্ডেড ক্��াস
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-4xl font-bold mb-2">
+        ১০,০০০+
+       </div>
+       <div class="opacity-80">
+        সফল শিক্ষার্থী
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-4xl font-bold mb-2">
+        ৫০+
+       </div>
+       <div class="opacity-80">
+        বিশেষজ্ঞ প্রশিক্ষক
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-4xl font-bold mb-2">
+        ৯৮%
+       </div>
+       <div class="opacity-80">
+        সন্তু���্টির হার
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PDF Books Section -->
+   <section id="pdf-books" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <h2 id="pdf-books-title" class="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-3 md:mb-4">ফ্রি পিডিএফ বই ডাউনলোড করুন</h2>
+     <p class="text-center text-base md:text-lg lg:text-xl opacity-80 mb-8 md:mb-12">আপনার দক্ষতা বৃদ্ধির জন্য মূল্যবান রিসোর্স</p>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Book 1 -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="p-6">
+        <div class="flex items-start space-x-4 mb-4">
+         <div class="text-5xl">
+          📕
+         </div>
+         <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">ফ্রিল্যান্সিং গাইড</h3>
+          <p class="text-sm opacity-80 mb-1">লেখক: জাহিদুল ইসলাম</p>
+          <p class="text-xs opacity-70">১২৫ পৃষ্ঠা • PDF</p>
+         </div>
+        </div>
+        <p class="text-sm opacity-80 mb-4">ফ্রিল্যান্সিং শুরু করার সম্পূর্ণ গাইডবুক। Upwork, Fiverr-এ কাজ পাওয়ার কৌশল।</p><a href="https://drive.google.com/file/d/sample1" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-lg font-semibold smooth-transition"> <span class="mr-2">⬇️</span>ডাউনলোড করুন </a>
+       </div>
+      </div><!-- Book 2 -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="p-6">
+        <div class="flex items-start space-x-4 mb-4">
+         <div class="text-5xl">
+          📗
+         </div>
+         <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">ডিজিটাল মার্কেটিং</h3>
+          <p class="text-sm opacity-80 mb-1">লেখক: সাকিব আহমেদ</p>
+          <p class="text-xs opacity-70">১৫০ পৃষ্ঠা • PDF</p>
+         </div>
+        </div>
+        <p class="text-sm opacity-80 mb-4">Facebook, Instagram মার্কেটিং এর A টু Z। বিজ্ঞাপন কৌশল এবং কনভার্শন।</p><a href="https://drive.google.com/file/d/sample2" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-lg font-semibold smooth-transition"> <span class="mr-2">⬇️</span>ডাউনলোড করুন </a>
+       </div>
+      </div><!-- Book 3 -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="p-6">
+        <div class="flex items-start space-x-4 mb-4">
+         <div class="text-5xl">
+          📘
+         </div>
+         <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">গ্রাফিক ডিজাইন মাস্টারি</h3>
+          <p class="text-sm opacity-80 mb-1">লেখক: তানভীর রহমান</p>
+          <p class="text-xs opacity-70">২০০ পৃষ্ঠা • PDF</p>
+         </div>
+        </div>
+        <p class="text-sm opacity-80 mb-4">Photoshop, Illustrator, Canva দিয়ে প্রফেশনাল ডিজাইন তৈরির সম্পূর্ণ টিউটোরিয়াল।</p><a href="https://drive.google.com/file/d/sample3" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-lg font-semibold smooth-transition"> <span class="mr-2">⬇️</span>ডাউনলোড করুন </a>
+       </div>
+      </div><!-- Book 4 -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="p-6">
+        <div class="flex items-start space-x-4 mb-4">
+         <div class="text-5xl">
+          📙
+         </div>
+         <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">ওয়েব ডেভেলপমেন্ট</h3>
+          <p class="text-sm opacity-80 mb-1">লেখক: মোঃ মঞ্জুরুল হক</p>
+          <p class="text-xs opacity-70">৩০০ পৃষ্ঠা • PDF</p>
+         </div>
+        </div>
+        <p class="text-sm opacity-80 mb-4">HTML, CSS, JavaScript এবং React দিয়ে আধুনিক ওয়েবসাইট তৈরির সম্পূর্ণ গাইড।</p><a href="https://drive.google.com/file/d/sample4" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-lg font-semibold smooth-transition"> <span class="mr-2">⬇️</span>ডাউনলোড করুন </a>
+       </div>
+      </div><!-- Book 5 -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="p-6">
+        <div class="flex items-start space-x-4 mb-4">
+         <div class="text-5xl">
+          📓
+         </div>
+         <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">ইউটিউব সাকসেস গাইড</h3>
+          <p class="text-sm opacity-80 mb-1">লেখক: নাহিয়ান কবীর</p>
+          <p class="text-xs opacity-70">১৮০ পৃষ্ঠা • PDF</p>
+         </div>
+        </div>
+        <p class="text-sm opacity-80 mb-4">ইউটিউব চ্যানেল গ্রোথ, কনটেন্ট স্ট্র্যাটেজি এবং মনিটাইজেশনের সম্পূর্ণ টিপস।</p><a href="https://drive.google.com/file/d/sample5" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-lg font-semibold smooth-transition"> <span class="mr-2">⬇️</span>ডাউনলোড করুন </a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- YouTube Videos Section -->
+   <section id="youtube-videos" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <h2 id="youtube-title" class="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-3 md:mb-4">সেরা শিক্ষামূলক ভিডিও</h2>
+     <p class="text-center text-base md:text-lg lg:text-xl opacity-80 mb-8 md:mb-12">ইউটিউব থেকে সংগৃহীত বিষয়ভিত্তিক সেরা ভিডিও</p>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Video 1: Freelancing -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/Z3lUqmilfTo" title="ফ্রিল্যা���্সিং টিউটোরিয়াল" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">���</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">ফ্রিল্যান্সিং</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">ফ্রিল্যান্সিং শুরু করার সম্পূর্ণ গাইড</h3>
+        <p class="opacity-80 text-sm">শূন���য থেকে ফ্রিল্যান্সিং শুরু করার বিস্তারিত টিউটোরিয়াল</p>
+       </div>
+      </div><!-- Video 2: Digital Marketing -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/nU-IIXBWlS4" title="ডিজিটাল মার্কেটিং" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">📱</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">মার্কেটিং</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">ডিজিটাল মার্কেটিং বেসিক টু অ্যাডভান্স</h3>
+        <p class="opacity-80 text-sm">ফেসবুক, ইনস্টাগ্রাম মার্কেটিং শিখুন সহজে</p>
+       </div>
+      </div><!-- Video 3: YouTube -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/LKjGIRhyOzs" title="ইউটিউব টিউটোরি��়াল" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">🎥</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">ইউটিউব</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">ইউটিউব চ্যানেল তৈরি ও মনিটাইজেশন</h3>
+        <p class="opacity-80 text-sm">কিভাবে ইউটিউব থেকে আয় করবেন - সম্পূর্ণ গাইড</p>
+       </div>
+      </div><!-- Video 4: Graphic Design -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/WONZVnlam6U" title="গ্রাফিক ডিজাইন" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">🎨</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">ডিজাইন</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">গ্রাফিক ডিজাইন শেখার সহজ উপায়</h3>
+        <p class="opacity-80 text-sm">ক্যানভা দিয়ে প্রফেশনাল ডিজাইন তৈর��� করুন</p>
+       </div>
+      </div><!-- Video 5: Web Development -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/ysEN5RaKOlA" title="ওয়েব ডেভেলপমেন্ট" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">💻</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">প্রোগ্রামিং</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">ওয়েব ডেভেলপমেন্ট কোর্স বাংলা</h3>
+        <p class="opacity-80 text-sm">HTML, CSS, JavaScript শিখে ওয়েবসাইট তৈরি করুন</p>
+       </div>
+      </div><!-- Video 6: E-commerce -->
+      <div class="rounded-xl shadow-lg overflow-hidden smooth-transition hover:shadow-2xl">
+       <div class="aspect-video"><iframe class="w-full h-full" src="https://www.youtube.com/embed/B9R9bmIInvg" title="ই-কমার্স" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">🛒</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">ই-কমা�����্স</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">অনলাইন ব্যবসা শুরু করার উপায়</h3>
+        <p class="opacity-80 text-sm">ফেসবুক শপ এবং ই-কমার্স ব্যবসা পরিচালনা</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Courses Section -->
+   <section id="courses" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <h2 id="courses-title" class="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12">জনপ্রিয় কোর্স সমূহ</h2>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Course 1 -->
+      <div class="course-card rounded-xl shadow-lg overflow-hidden smooth-transition">
+       <div class="video-placeholder aspect-video">
+        <div class="play-button" style="width: 60px; height: 60px;">
+         <div class="play-icon" style="border-left: 18px solid #667eea; border-top: 11px solid transparent; border-bottom: 11px solid transparent;"></div>
+        </div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">💼</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">ফ্রিল্যান্সিং</span>
+        </div>
+        <h3 id="course-1-title" class="text-2xl font-bold mb-3">ফ্রিল্যান্সিং মাস্টারক্লাস</h3>
+        <p class="mb-4 opacity-80">Upwork, Fiverr এ কাজ পাওয়ার A টু Z গাইড। ৪৫টি প্রি-রেকর্ডেড ভিডিও ক্লাস।</p>
+        <div class="flex justify-between items-center"><span class="font-bold text-xl">৳২,৯৯৯</span> <button class="px-6 py-2 rounded-lg font-semibold smooth-transition">বিস্তারিত</button>
+        </div>
+       </div>
+      </div><!-- Course 2 -->
+      <div class="course-card rounded-xl shadow-lg overflow-hidden smooth-transition">
+       <div class="video-placeholder aspect-video">
+        <div class="play-button" style="width: 60px; height: 60px;">
+         <div class="play-icon" style="border-left: 18px solid #667eea; border-top: 11px solid transparent; border-bottom: 11px solid transparent;"></div>
+        </div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">🎥</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">ইউটিউব</span>
+        </div>
+        <h3 id="course-2-title" class="text-2xl font-bold mb-3">ইউটিউব মনিটা�����ে���ন</h3>
+        <p class="mb-4 opacity-80">চ্যানেল তৈরি থেকে মনিটাইজেশন পর্যন্ত। ৩৮টি প��রি-রেকর্ডেড ভিডিও ক্লাস।</p>
+        <div class="flex justify-between items-center"><span class="font-bold text-xl">৳২,৪৯৯</span> <button class="px-6 py-2 rounded-lg font-semibold smooth-transition">বিস্তারিত</button>
+        </div>
+       </div>
+      </div><!-- Course 3 -->
+      <div class="course-card rounded-xl shadow-lg overflow-hidden smooth-transition">
+       <div class="video-placeholder aspect-video">
+        <div class="play-button" style="width: 60px; height: 60px;">
+         <div class="play-icon" style="border-left: 18px solid #667eea; border-top: 11px solid transparent; border-bottom: 11px solid transparent;"></div>
+        </div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center space-x-2 mb-3"><span class="text-2xl">📱</span> <span class="px-3 py-1 rounded-full text-sm font-semibold">��িজিটাল মার্কেটিং</span>
+        </div>
+        <h3 id="course-3-title" class="text-2xl font-bold mb-3">সোশ্যাল মিডিয়া মার্কেটিং</h3>
+        <p class="mb-4 opacity-80">Facebook, Instagram মার্কেটিং শিখুন। ৫০টি প্রি-রেকর্ডেড ভিডিও ক্লাস।</p>
+        <div class="flex justify-between items-center"><span class="font-bold text-xl">৳৩,৪৯৯</span> <button class="px-6 py-2 rounded-lg font-semibold smooth-transition">বিস্তারিত</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Features Section -->
+   <section id="features" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <h2 id="features-title" class="text-4xl font-bold text-center mb-12">আম��দের বিশেষত্ব</h2>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="feature-card text-center p-8 rounded-xl smooth-transition">
+       <div class="feature-icon text-6xl mb-4">
+        🎬
+       </div>
+       <h3 class="text-2xl font-bold mb-3">প্রি-রেকর্ডেড ভিডিও</h3>
+       <p class="opacity-80">যেকোনো সময় ��েকোনো জায়গা থেকে শিখুন। লাইফটাইম এক্সেস পান।</p>
+      </div>
+      <div class="feature-card text-center p-8 rounded-xl smooth-transition">
+       <div class="feature-icon text-6xl mb-4">
+        📝
+       </div>
+       <h3 class="text-2xl font-bold mb-3">প্র���যাকটিস ম্যাটেরিয়াল</h3>
+       <p class="opacity-80">প্র��িটি কোর্সের সাথে পাবেন PDF, টেমপ্লেট এবং রিসোর���স ফাইল।</p>
+      </div>
+      <div class="feature-card text-center p-8 rounded-xl smooth-transition">
+       <div class="feature-icon text-6xl mb-4">
+        🏆
+       </div>
+       <h3 class="text-2xl font-bold mb-3">সার্টিফিকেট</h3>
+       <p class="opacity-80">কোর্স সম্পন্ন করে পাবেন ভেরিফাইড সার্ট���ফিকেট।</p>
+      </div>
+      <div class="feature-card text-center p-8 rounded-xl smooth-transition">
+       <div class="feature-icon text-6xl mb-4">
+        👥
+       </div>
+       <h3 class="text-2xl font-bold mb-3">কমিউনিটি সাপোর্ট</h3>
+       <p class="opacity-80">হাজারো শিক্ষার্থীর সাথে যুক্ত হন এবং অভিজ্ঞতা শেয়ার ��রুন।</p>
+      </div>
+      <div class="feature-card text-center p-8 rounded-xl smooth-transition">
+       <div class="feature-icon text-6xl mb-4">
+        💬
+       </div>
+       <h3 class="text-2xl font-bold mb-3">Q&amp;A সেশন</h3>
+       <p class="opacity-80">প্রশিক্ষকদের সাথে সরাসরি প্রশ্ন-উত্তর সেশনে অংশ নিন।</p>
+      </div>
+      <div class="feature-card text-center p-8 rounded-xl smooth-transition">
+       <div class="feature-icon text-6xl mb-4">
+        📊
+       </div>
+       <h3 class="text-2xl font-bold mb-3">প্রগ্রেস ট্র্যাকিং</h3>
+       <p class="opacity-80">আপনার শেখার অগ্রগতি ট্র্যাক করুন এবং লক্ষ্য অর্জন করুন��</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA Section -->
+   <section class="w-full py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center rounded-2xl p-12 shadow-2xl">
+     <h2 class="text-4xl font-bold mb-6">আজই শুরু করুন আপনার যাত্রা</h2>
+     <p class="text-xl mb-8 opacity-90">৭ দিনের ফ্রি ট্রায়ালে যোগ দিন এবং যেকোনো কোর্স বিনামূল্যে দেখুন</p><button class="px-10 py-4 rounded-lg font-bold text-xl smooth-transition shadow-lg hover:shadow-xl">ফ্রি ট্রায়াল শুরু করুন</button>
+    </div>
+   </section><!-- Footer -->
+   <footer id="footer" class="w-full py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+       <h3 class="font-bold text-xl mb-4">আমাদের সম্পর্কে</h3>
+       <p class="opacity-80">বাংলাদেশের সেরা অনলাইন প্রশিক্ষণ প্ল��যাটফর্ম যেখানে আপনি শিখবেন এবং আয় করবেন।</p>
+      </div>
+      <div>
+       <h3 class="font-bold text-xl mb-4">কোর্স</h3>
+       <ul class="space-y-2 opacity-80">
+        <li><a href="#" class="smooth-transition">ফ্রিল্যান্সিং</a></li>
+        <li><a href="#" class="smooth-transition">ইউটিউব</a></li>
+        <li><a href="#" class="smooth-transition">ডিজিটাল মার্কেটিং</a></li>
+        <li><a href="#" class="smooth-transition">গ্রাফিক ডিজাইন</a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 class="font-bold text-xl mb-4">সাহায্য</h3>
+       <ul class="space-y-2 opacity-80">
+        <li><a href="#" class="smooth-transition">যোগাযোগ</a></li>
+        <li><a href="#" class="smooth-transition">FAQ</a></li>
+        <li><a href="#" class="smooth-transition">সাপোর্ট</a></li>
+        <li><a href="#" class="smooth-transition">গোপনীয়তা নীতি</a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 class="font-bold text-xl mb-4">যোগাযোগ</h3>
+       <ul class="space-y-2 opacity-80">
+        <li>📧 info@onlinetraining.com</li>
+        <li>📱 +880 1XXX-XXXXXX</li>
+        <li>📍 ঢাকা, বাংলাদেশ</li>
+       </ul>
+      </div>
+     </div>
+     <div class="border-t pt-8 text-center opacity-80">
+      <p id="footer-text">© ২০২৪ অনলাইন আয় প্রশিক্ষণ কেন্দ্র। সর্বস্বত্ব সংরক্ষিত।</p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_color: "#f8f9fa",
+      surface_color: "#ffffff",
+      text_color: "#212529",
+      primary_action_color: "#667eea",
+      secondary_action_color: "#764ba2",
+      font_family: "Noto Sans Bengali",
+      font_size: 16,
+      site_title: "অনলাইন আয় প্রশিক্ষণ কেন্দ্র",
+      tagline: "শিখুন এবং আয় করুন",
+      instructor_name: "মোঃ মঞ্জুরুল হক স্যার",
+      hero_title: "অনলাইন থেকে আয় করতে শিখুন",
+      hero_subtitle: "প্রফেশনাল প্রশিক্ষকদের থেকে শিখুন এবং আপনার ক্যারিয়ার শুরু করুন। প্রি-রেকর্ডেড ভিডিও, প্র্যাকটিস ম্যাটেরিয়াল এবং সার্টিফিকেট পান।",
+      cta_button: "এখনই শুরু করুন",
+      courses_title: "জনপ্রি��় কোর্স সমূহ",
+      course_1_title: "��্রিল্যান্সিং মাস্টারক্লাস",
+      course_2_title: "ইউটিউব মনিটাইজেশন",
+      course_3_title: "সোশ্যাল মিডিয়া মার্কেটি��",
+      features_title: "আমাদের বিশেষত্ব",
+      footer_text: "© ২০২৪ অনলাইন আয় প্রশিক্ষণ কেন্দ্র। সর্বস্বত্ব সংরক্ষিত।"
+    };
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = '"Noto Sans Bengali", Arial, sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+      // Apply background color
+      document.body.style.background = bgColor;
+      document.getElementById('app-container').style.background = bgColor;
+
+      // Apply surface colors
+      document.getElementById('navbar').style.background = surfaceColor;
+      document.getElementById('hero').style.background = surfaceColor;
+      document.getElementById('footer').style.background = surfaceColor;
+      
+      const courseCards = document.querySelectorAll('.course-card');
+      courseCards.forEach(card => {
+        card.style.background = surfaceColor;
+      });
+
+      const featureCards = document.querySelectorAll('.feature-card');
+      featureCards.forEach(card => {
+        card.style.background = surfaceColor;
+      });
+
+      // Apply text colors
+      document.body.style.color = textColor;
+      document.querySelectorAll('h1, h2, h3, p, a, div, span, li').forEach(el => {
+        el.style.color = textColor;
+      });
+
+      // Apply primary action color
+      const primaryButtons = [
+        document.getElementById('cta-button'),
+        ...document.querySelectorAll('section:nth-child(7) button')
+      ];
+      primaryButtons.forEach(btn => {
+        if (btn) {
+          btn.style.background = primaryColor;
+          btn.style.color = surfaceColor;
+        }
+      });
+
+      // Apply secondary action color
+      const secondaryButtons = document.querySelectorAll('.course-card button');
+      secondaryButtons.forEach(btn => {
+        btn.style.background = secondaryColor;
+        btn.style.color = surfaceColor;
+      });
+
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        link.style.color = textColor;
+      });
+
+      const badges = document.querySelectorAll('.course-card span.px-3');
+      badges.forEach(badge => {
+        badge.style.background = secondaryColor;
+        badge.style.color = surfaceColor;
+      });
+
+      // Apply to download buttons
+      const downloadLinks = document.querySelectorAll('a[href^="https://drive.google.com"]');
+      downloadLinks.forEach(link => {
+        link.style.background = secondaryColor;
+        link.style.color = surfaceColor;
+      });
+
+      // Apply fonts
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      // Apply font sizes
+      document.getElementById('site-title').style.fontSize = `${baseSize * 1.25}px`;
+      document.getElementById('tagline').style.fontSize = `${baseSize * 0.875}px`;
+      document.getElementById('hero-title').style.fontSize = `${baseSize * 2}px`;
+      document.getElementById('hero-subtitle').style.fontSize = `${baseSize * 1.25}px`;
+      document.getElementById('courses-title').style.fontSize = `${baseSize * 2}px`;
+      document.getElementById('features-title').style.fontSize = `${baseSize * 2}px`;
+      
+      document.querySelectorAll('.course-card h3').forEach(el => {
+        el.style.fontSize = `${baseSize * 1.25}px`;
+      });
+      
+      document.querySelectorAll('.feature-card h3').forEach(el => {
+        el.style.fontSize = `${baseSize * 1.25}px`;
+      });
+
+      document.querySelectorAll('p').forEach(el => {
+        el.style.fontSize = `${baseSize}px`;
+      });
+
+      document.querySelectorAll('nav a').forEach(el => {
+        el.style.fontSize = `${baseSize}px`;
+      });
+
+      // Update text content
+      document.getElementById('site-title').textContent = config.site_title || defaultConfig.site_title;
+      document.getElementById('tagline').textContent = config.tagline || defaultConfig.tagline;
+      document.getElementById('instructor-name').textContent = config.instructor_name || defaultConfig.instructor_name;
+      document.getElementById('news-label').textContent = config.news_label || defaultConfig.news_label;
+      document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+      document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      document.getElementById('cta-button').textContent = config.cta_button || defaultConfig.cta_button;
+      document.getElementById('pdf-books-title').textContent = config.pdf_books_title || defaultConfig.pdf_books_title;
+      document.getElementById('youtube-title').textContent = config.youtube_title || defaultConfig.youtube_title;
+      document.getElementById('courses-title').textContent = config.courses_title || defaultConfig.courses_title;
+      document.getElementById('course-1-title').textContent = config.course_1_title || defaultConfig.course_1_title;
+      document.getElementById('course-2-title').textContent = config.course_2_title || defaultConfig.course_2_title;
+      document.getElementById('course-3-title').textContent = config.course_3_title || defaultConfig.course_3_title;
+      document.getElementById('features-title').textContent = config.features_title || defaultConfig.features_title;
+      document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (value) => {
+              config.surface_color = value;
+              window.elementSdk.setConfig({ surface_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+            set: (value) => {
+              config.primary_action_color = value;
+              window.elementSdk.setConfig({ primary_action_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (value) => {
+              config.secondary_action_color = value;
+              window.elementSdk.setConfig({ secondary_action_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["site_title", config.site_title || defaultConfig.site_title],
+        ["tagline", config.tagline || defaultConfig.tagline],
+        ["instructor_name", config.instructor_name || defaultConfig.instructor_name],
+        ["news_label", config.news_label || defaultConfig.news_label],
+        ["hero_title", config.hero_title || defaultConfig.hero_title],
+        ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+        ["cta_button", config.cta_button || defaultConfig.cta_button],
+        ["pdf_books_title", config.pdf_books_title || defaultConfig.pdf_books_title],
+        ["youtube_title", config.youtube_title || defaultConfig.youtube_title],
+        ["courses_title", config.courses_title || defaultConfig.courses_title],
+        ["course_1_title", config.course_1_title || defaultConfig.course_1_title],
+        ["course_2_title", config.course_2_title || defaultConfig.course_2_title],
+        ["course_3_title", config.course_3_title || defaultConfig.course_3_title],
+        ["features_title", config.features_title || defaultConfig.features_title],
+        ["footer_text", config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // PDF Upload Functionality
+    const pdfFileInput = document.getElementById('pdf-file');
+    const fileNameDisplay = document.getElementById('file-name');
+    const pdfUploadForm = document.getElementById('pdf-upload-form');
+    const uploadMessage = document.getElementById('upload-message');
+    const dropZone = pdfFileInput.parentElement;
+
+    // Click to upload
+    dropZone.addEventListener('click', () => {
+      pdfFileInput.click();
+    });
+
+    // File selection
+    pdfFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        fileNameDisplay.textContent = `নির্বাচিত: ${file.name}`;
+        fileNameDisplay.classList.remove('hidden');
+      }
+    });
+
+    // Drag and drop
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = window.elementSdk?.config?.primary_action_color || defaultConfig.primary_action_color;
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.borderColor = '';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = '';
+      const file = e.dataTransfer.files[0];
+      if (file && file.type === 'application/pdf') {
+        pdfFileInput.files = e.dataTransfer.files;
+        fileNameDisplay.textContent = `নির্বাচিত: ${file.name}`;
+        fileNameDisplay.classList.remove('hidden');
+      }
+    });
+
+    // Form submission
+    pdfUploadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const bookTitle = document.getElementById('book-title').value;
+      const bookAuthor = document.getElementById('book-author').value;
+      const bookCategory = document.getElementById('book-category').value;
+      const file = pdfFileInput.files[0];
+
+      // Show success message
+      uploadMessage.classList.remove('hidden');
+      uploadMessage.style.background = window.elementSdk?.config?.primary_action_color || defaultConfig.primary_action_color;
+      uploadMessage.style.color = window.elementSdk?.config?.surface_color || defaultConfig.surface_color;
+      uploadMessage.innerHTML = `
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">✅</span>
+          <div>
+            <p class="font-bold">সফলভাবে আপলোড হয়েছে!</p>
+            <p class="text-sm opacity-90">বই: ${bookTitle} - লেখক: ${bookAuthor}</p>
+            <p class="text-xs opacity-80 mt-1">বিশেষ দ্রষ্টব্য: এটি একটি ডেমো ফর্ম। প্রকৃত ��পলো��ের জন্য ব্যাকএন্ড সার্ভার প্রয়োজন।</p>
+          </div>
+        </div>
+      `;
+
+      // Reset form
+      pdfUploadForm.reset();
+      fileNameDisplay.classList.add('hidden');
+
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        uploadMessage.classList.add('hidden');
+      }, 5000);
+    });
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a428653c28c4e9f',t:'MTc2NDA4ODE2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
