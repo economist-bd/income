@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফিউচার লার্নিং - কমপ্লিট ইকোসিস্টেম</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"Orbitron"', 'monospace'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            pink: '#ff0055',
+                            green: '#0aff68',
+                            yellow: '#fcee0a',
+                        },
+                        dark: {
+                            bg: '#050510',
+                            card: 'rgba(20, 20, 35, 0.6)',
+                            border: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'scroll-left': 'scroll-left 25s linear infinite',
+                        'scroll-up': 'scrollUp 20s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 10px rgba(0, 243, 255, 0.2)' },
+                            'to': { boxShadow: '0 0 20px rgba(0, 243, 255, 0.6), 0 0 10px rgba(188, 19, 254, 0.4)' }
+                        },
+                        'scroll-left': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        scrollUp: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(-50%)' },
+                        }
+                    },
+                    aspectRatio: {
+                        'book': '1280 / 714',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050510;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Particle Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050510;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #00f3ff, #bc13fe);
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .glass-nav {
+            background: rgba(5, 5, 16, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Dropdown Styling */
+        .dropdown-content {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .group:hover .dropdown-content {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Card Hover Effects */
+        .hover-card-effect {
+            transition: all 0.3s ease;
+        }
+        .hover-card-effect:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+        }
+
+        /* Thumbnail Image Container */
+        .thumbnail-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .thumbnail-container img {
+            transition: transform 0.5s ease;
+        }
+        .thumbnail-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Chat Bubble */
+        .chat-bubble {
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.05));
+            border-left: 3px solid #00f3ff;
+        }
+        
+        /* Mobile Menu */
+        #mobile-premium-menu {
+            transition: max-height 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+        #mobile-premium-menu.open {
+            max-height: 500px;
+        }
+
+        /* Tab Active State */
+        .tab-btn.active {
+            background: linear-gradient(90deg, #00f3ff, #bc13fe);
+            color: black;
+            font-weight: bold;
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-neon-pink selection:text-white">
+
+    <!-- Animated Background -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Ambient Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-purple/20 rounded-full blur-[150px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-neon-blue/20 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+    <div id="app-container" class="w-full relative z-10">
+        
+        <!-- Navigation -->
+        <nav id="navbar" class="w-full fixed top-0 z-50 glass-nav transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex items-center space-x-3 group cursor-pointer">
+                        <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-neon-blue/50 transition-all">
+                            <span class="text-2xl animate-pulse-slow">📚</span>
+                            <div class="absolute -inset-1 bg-neon-blue/20 blur opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                        </div>
+                        <div>
+                            <h1 class="text-lg md:text-xl font-bold font-mono tracking-wider text-white group-hover:text-neon-blue transition-colors">ফিউচার লার্নিং</h1>
+                            <p class="text-[10px] md:text-xs text-gray-400 font-mono tracking-[0.2em] uppercase">শিখুন এবং আয় করুন</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="#home" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">হোম</a>
+                        <a href="#courses" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">কোর্স</a>
+                        <a href="#features" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">ফিচার</a>
+                        <a href="#community" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">কমিউনিটি</a>
+                        
+                        <!-- Premium Dropdown (Desktop) -->
+                        <div class="relative group">
+                            <button class="px-4 py-2 text-sm font-medium text-neon-yellow hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-1">
+                                <i data-lucide="crown" class="w-4 h-4"></i> Premium <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div class="dropdown-content absolute left-0 mt-2 w-56 rounded-xl glass-panel border border-neon-yellow/30 shadow-[0_0_20px_rgba(252,238,10,0.2)] overflow-hidden">
+                                <div class="py-2">
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">অ্যাডভান্সড মেন্টরশিপ</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">প্রাইভেট ডিসকর্ড গ্রুপ</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">লাইভ প্রজেক্ট ১</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">লাইভ প্রজেক্ট ২</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">ইন্টারভিউ প্রিপারেশন</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">CV রিভিউ সার্ভিস</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">পোর্টফোলিও বিল্ডার</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">ক্লায়েন্ট হান্টিং টিপস</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">পেমেন্ট গেটওয়ে সেটআপ</a>
+                                    <a href="javascript:void(0)" onclick="requireLogin()" class="block px-4 py-2 text-sm text-gray-300 hover:bg-neon-yellow/20 hover:text-white transition-colors">ওয়ান-অন-ওয়ান কল</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="#contact" class="px-4 py-2 text-sm font-medium text-neon-blue border border-neon-blue/30 rounded-lg hover:bg-neon-blue/10 hover:shadow-[0_0_15px_rgba(0,243,255,0.3)] transition-all ml-2">যোগাযোগ</a>
+                    </div>
+
+                    <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-300 hover:text-white">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-dark-bg/95 backdrop-blur-xl max-h-screen overflow-y-auto">
+                <div class="px-4 py-4 space-y-2">
+                    <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">হোম</a>
+                    <a href="#courses" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">কোর্স</a>
+                    <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">ফিচার</a>
+                    <a href="#community" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">কমিউনিটি</a>
+                    
+                    <!-- Mobile Premium Dropdown -->
+                    <div>
+                        <button id="mobile-premium-btn" class="flex w-full items-center justify-between px-3 py-2 rounded-md text-base font-medium text-neon-yellow hover:bg-white/5">
+                            <span class="flex items-center gap-2"><i data-lucide="crown" class="w-4 h-4"></i> Premium</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300" id="mobile-chevron"></i>
+                        </button>
+                        <div id="mobile-premium-menu" class="pl-6 space-y-1">
+                             <a href="javascript:void(0)" onclick="requireLogin()" class="block px-3 py-2 text-sm text-gray-400 hover:text-white">অ্যাডভান্সড মেন্টরশিপ</a>
+                             <a href="javascript:void(0)" onclick="requireLogin()" class="block px-3 py-2 text-sm text-gray-400 hover:text-white">প্রাইভেট ডিসকর্ড গ্রুপ</a>
+                             <!-- Other links omitted for brevity but logic is same -->
+                             <a href="javascript:void(0)" onclick="requireLogin()" class="block px-3 py-2 text-sm text-gray-400 hover:text-white">ওয়ান-অন-ওয়ান কল</a>
+                        </div>
+                    </div>
+
+                    <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-neon-blue bg-neon-blue/5 border border-neon-blue/20">যোগাযোগ</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Scrolling News Bar -->
+        <div class="pt-20">
+            <div class="w-full py-2 bg-gradient-to-r from-transparent via-neon-purple/10 to-transparent border-y border-white/5 relative overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 flex items-center">
+                    <div class="flex items-center gap-2 px-3 py-1 bg-neon-pink/10 border border-neon-pink/30 rounded text-neon-pink text-xs font-bold font-mono uppercase mr-4 z-10 backdrop-blur-sm shadow-[0_0_10px_rgba(255,0,85,0.3)]">
+                        <span class="animate-pulse">●</span> আপডেট
+                    </div>
+                    <div class="scrolling-news flex-1 overflow-hidden relative h-6">
+                        <div class="news-content absolute whitespace-nowrap animate-scroll-left text-sm text-gray-300 font-mono flex items-center h-full">
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="zap" class="w-3 h-3 text-neon-yellow"></i> নতুন ব্যাচ শুরু হচ্ছে ১৫ ডিসেম্বর</span>
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="star" class="w-3 h-3 text-neon-blue"></i> ১০,০০০+ শিক্ষার্থী সফল ক্যারিয়ার শুরু করেছেন</span>
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="trophy" class="w-3 h-3 text-neon-purple"></i> এই মাসের সেরা শিক্ষার্থী পুরস্কার</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HERO SECTION -->
+        <section id="home" class="w-full py-16 md:py-24 px-4 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1 relative z-10 animate-float">
+                    <div class="mb-6 inline-flex items-center gap-3 p-2 pr-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-neon-blue to-neon-purple flex items-center justify-center text-xl shadow-lg">👨‍💻</div>
+                        <div>
+                            <p class="text-[10px] text-gray-400 font-mono uppercase tracking-widest">প্রধান প্রশিক্ষক</p>
+                            <h3 class="text-sm font-bold text-white">মোঃ মঞ্জুরুল হক স্যার</h3>
+                        </div>
+                    </div>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                        <span class="text-white">অনলাইন থেকে</span> <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-blue via-white to-neon-purple">আয় করতে শিখুন</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg mb-8 max-w-lg font-light leading-relaxed">
+                        প্রফেশনাল প্রশিক্ষকদের থেকে শিখুন এবং আপনার ফিউচার ক্যারিয়ার শুরু করুন। প্রি-রেকর্ডেড ভিডিও, প্র্যাকটিস ম্যাটেরিয়াল এবং ভেরিফাইড সার্টিফিকেট।
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="checkAccess('video', null)" class="px-8 py-4 bg-neon-blue text-black font-bold rounded-lg relative overflow-hidden group hover:scale-105 transition-transform">
+                            <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></span>
+                            <span class="flex items-center gap-2">এখনই শুরু করুন <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                        </button>
+                        <a href="#courses" class="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-lg hover:bg-white/5 hover:border-neon-purple transition-all flex items-center gap-2">
+                            <i data-lucide="play-circle" class="w-4 h-4 text-neon-purple"></i> ডেমো দেখুন
+                        </a>
+                    </div>
+                </div>
+                <div class="order-1 md:order-2 relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+                    <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black cursor-pointer" onclick="checkAccess('video', null)">
+                        <div class="aspect-video relative bg-gray-900">
+                             <video id="hero-video" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" muted loop playsinline poster="https://img.freepik.com/free-photo/programming-background-with-person-working-with-codes-computer_23-2150010125.jpg">
+                                <source src="./videos/hero-video.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="w-20 h-20 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                                    <div class="w-0 h-0 border-t-[10px] border-t-transparent border-l-[20px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS SECTION -->
+        <section class="w-full py-10 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="glass-panel rounded-2xl p-8 border-t border-neon-blue/20">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="text-center"><h3 class="text-3xl font-mono font-bold text-white mb-2">৫০০+</h3><p class="text-neon-blue text-xs uppercase tracking-widest">ভিডিও ক্লাস</p></div>
+                        <div class="text-center"><h3 class="text-3xl font-mono font-bold text-white mb-2">১০k+</h3><p class="text-neon-purple text-xs uppercase tracking-widest">সফল শিক্ষার্থী</p></div>
+                        <div class="text-center"><h3 class="text-3xl font-mono font-bold text-white mb-2">৫০+</h3><p class="text-neon-pink text-xs uppercase tracking-widest">এক্সপার্ট মেন্টর</p></div>
+                        <div class="text-center"><h3 class="text-3xl font-mono font-bold text-white mb-2">৯৮%</h3><p class="text-neon-green text-xs uppercase tracking-widest">সন্তুষ্টি রেট</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PDF BOOKS SECTION -->
+        <section id="pdf-books" class="w-full py-20 px-4 relative">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-mono text-neon-blue tracking-[0.5em] uppercase mb-2">নলেজ বেস</h2>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white">ফ্রি পিডিএফ লাইব্রেরি</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Book 1 -->
+                    <div class="glass-panel rounded-xl overflow-hidden hover-card-effect group flex flex-col h-full">
+                        <div class="thumbnail-container aspect-[1280/714] w-full bg-gray-900 relative">
+                            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1280&h=714&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-white mb-2">ফ্রিল্যান্সিং গাইড ২০২৫</h3>
+                            <button onclick="checkAccess('pdf', 'https://drive.google.com/file/d/sample1')" class="mt-auto flex items-center justify-center gap-2 py-2 rounded-lg bg-neon-blue/10 hover:bg-neon-blue/20 text-neon-blue border border-neon-blue/30 text-sm font-bold transition-all w-full"><i data-lucide="download" class="w-4 h-4"></i> ডাউনলোড করুন</button>
+                        </div>
+                    </div>
+                    <!-- Book 2 -->
+                    <div class="glass-panel rounded-xl overflow-hidden hover-card-effect group flex flex-col h-full">
+                        <div class="thumbnail-container aspect-[1280/714] w-full bg-gray-900 relative">
+                            <img src="https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=1280&h=714&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-white mb-2">ডিজিটাল মার্কেটিং</h3>
+                            <button onclick="checkAccess('pdf', 'https://drive.google.com/file/d/sample2')" class="mt-auto flex items-center justify-center gap-2 py-2 rounded-lg bg-neon-purple/10 hover:bg-neon-purple/20 text-neon-purple border border-neon-purple/30 text-sm font-bold transition-all w-full"><i data-lucide="download" class="w-4 h-4"></i> ডাউনলোড করুন</button>
+                        </div>
+                    </div>
+                    <!-- Book 3 -->
+                    <div class="glass-panel rounded-xl overflow-hidden hover-card-effect group flex flex-col h-full">
+                        <div class="thumbnail-container aspect-[1280/714] w-full bg-gray-900 relative">
+                            <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1280&h=714&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white border border-white/10">NEW</div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-white mb-2">ক্রিপ্টো ট্রেডিং গাইড</h3>
+                            <button onclick="checkAccess('pdf', '#')" class="mt-auto flex items-center justify-center gap-2 py-2 rounded-lg bg-neon-green/10 hover:bg-neon-green/20 text-neon-green border border-neon-green/30 text-sm font-bold transition-all w-full"><i data-lucide="download" class="w-4 h-4"></i> ডাউনলোড করুন</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COURSES SECTION -->
+        <section id="courses" class="w-full py-20 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                    <div>
+                        <h2 class="text-sm font-mono text-neon-purple tracking-[0.5em] uppercase mb-2">স্কিল ডেভেলপমেন্ট</h2>
+                        <h2 class="text-3xl md:text-5xl font-bold text-white">জনপ্রিয় কোর্স এবং ভিডিও</h2>
+                    </div>
+                     <!-- Filter Tabs -->
+                    <div class="flex flex-wrap gap-2">
+                        <button class="tab-btn active px-4 py-1 rounded-full border border-white/10 text-sm uppercase">সব</button>
+                        <button class="tab-btn px-4 py-1 rounded-full border border-white/10 text-gray-400 hover:text-white text-sm uppercase">ডেভেলপমেন্ট</button>
+                        <button class="tab-btn px-4 py-1 rounded-full border border-white/10 text-gray-400 hover:text-white text-sm uppercase">ডিজাইন</button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Course 1 -->
+                    <div class="glass-panel rounded-2xl overflow-hidden hover-card-effect group cursor-pointer" onclick="checkAccess('video', null)">
+                        <div class="relative aspect-video">
+                            <img src="./images/course1-thumbnail.jpg" alt="ফ্রিল্যান্সিং" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80'">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/30 flex items-center justify-center"><i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i></div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">ফ্রিল্যান্সিং মাস্টারক্লাস ১</h3>
+                            <p class="text-sm text-gray-400">কিভাবে প্রোফাইল সেটআপ করবেন।</p>
+                        </div>
+                    </div>
+                    <!-- Course 2 (YouTube) -->
+                    <div class="glass-panel rounded-2xl overflow-hidden hover-card-effect group cursor-pointer" onclick="checkAccess('video', null)">
+                        <div class="relative aspect-video">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="ওয়েব ডিজাইন" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/30 flex items-center justify-center"><i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i></div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">ওয়েব ডিজাইন টিউটোরিয়াল</h3>
+                            <p class="text-sm text-gray-400">HTML এবং CSS এর প্রাথমিক ধারণা।</p>
+                        </div>
+                    </div>
+                     <!-- Course 3 (YouTube) -->
+                     <div class="glass-panel rounded-2xl overflow-hidden hover-card-effect group cursor-pointer" onclick="checkAccess('video', null)">
+                        <div class="relative aspect-video">
+                            <img src="https://img.youtube.com/vi/ysz5S6P_ks0/maxresdefault.jpg" alt="এআই টুলস" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/30 flex items-center justify-center"><i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i></div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">এআই টুলস পরিচিতি</h3>
+                            <p class="text-sm text-gray-400">ChatGPT ব্যবহারের সঠিক নিয়ম।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section id="features" class="w-full py-20 px-4 bg-black/20">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-white mb-4">আমাদের <span class="text-neon-green">ভবিষ্যৎ সুবিধা</span></h2>
+                    <p class="text-gray-400">শুধু কোর্স নয়, আমরা দিচ্ছি পূর্ণাঙ্গ ইকোসিস্টেম</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-panel p-8 rounded-2xl hover-card-effect">
+                        <div class="w-14 h-14 bg-neon-blue/10 rounded-xl flex items-center justify-center mb-6"><i data-lucide="bot" class="w-7 h-7 text-neon-blue"></i></div>
+                        <h3 class="text-xl font-bold text-white mb-3">এআই মেন্টরশিপ</h3>
+                        <p class="text-gray-400 text-sm">ব্যক্তিগত এআই শিক্ষক যিনি ২৪/৭ গাইডলাইন প্রদান করবেন।</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl hover-card-effect">
+                        <div class="w-14 h-14 bg-neon-purple/10 rounded-xl flex items-center justify-center mb-6"><i data-lucide="glasses" class="w-7 h-7 text-neon-purple"></i></div>
+                        <h3 class="text-xl font-bold text-white mb-3">ইমারসিভ VR ল্যাব</h3>
+                        <p class="text-gray-400 text-sm">বইয়ের পাতা থেকে সরাসরি থ্রিডি সিমুলেশনে প্রবেশ করুন।</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl hover-card-effect">
+                        <div class="w-14 h-14 bg-neon-green/10 rounded-xl flex items-center justify-center mb-6"><i data-lucide="shield-check" class="w-7 h-7 text-neon-green"></i></div>
+                        <h3 class="text-xl font-bold text-white mb-3">ব্লকচেইন সার্টিফিকেট</h3>
+                        <p class="text-gray-400 text-sm">সুরক্ষিত এবং যাচাইযোগ্য ডিজিটাল সার্টিফিকেট।</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMUNITY SECTION (New Merged) -->
+        <section id="community" class="w-full py-20 px-4">
+            <div class="max-w-7xl mx-auto">
+                 <div class="text-center mb-12">
+                    <h2 class="text-sm font-mono text-neon-pink tracking-[0.5em] uppercase mb-2">গ্লোবাল নেটওয়ার্ক</h2>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white">কমিউনিটি হাব</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                    <!-- Left: Topics -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <div class="glass-panel rounded-2xl p-6 md:p-8">
+                            <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="hash" class="text-neon-blue"></i> ট্রেন্ডিং টপিক</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-transparent hover:border-neon-blue/30 cursor-pointer">
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-blue-500/20 p-3 rounded-lg text-blue-400"><i data-lucide="code-2"></i></div>
+                                        <div><h4 class="font-bold text-white">প্রোগ্রামিং হেল্পলাইন</h4><p class="text-xs text-gray-400">Python, JS আলোচনা</p></div>
+                                    </div>
+                                    <span class="text-xs font-mono text-gray-500 bg-black/30 px-2 py-1 rounded">৩৫০+ পোস্ট</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-transparent hover:border-neon-purple/30 cursor-pointer">
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-purple-500/20 p-3 rounded-lg text-purple-400"><i data-lucide="briefcase"></i></div>
+                                        <div><h4 class="font-bold text-white">ফ্রিল্যান্সিং গাইডলাইন</h4><p class="text-xs text-gray-400">মার্কেটপ্লেস টিপস</p></div>
+                                    </div>
+                                    <span class="text-xs font-mono text-gray-500 bg-black/30 px-2 py-1 rounded">১২০+ অনলাইন</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right: Live Feed -->
+                    <div class="lg:col-span-4">
+                        <div class="glass-panel rounded-2xl h-full p-6 relative overflow-hidden flex flex-col min-h-[400px]">
+                            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                                <h3 class="text-lg font-bold flex items-center gap-2">
+                                    <span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span></span>
+                                    লাইভ ফিড
+                                </h3>
+                            </div>
+                            <div class="relative flex-1 overflow-hidden">
+                                <div class="space-y-4 animate-scroll-up">
+                                    <div class="chat-bubble p-3 rounded-lg"><p class="text-xs text-gray-300"><strong>রাফসান:</strong> পাইথন প্রজেক্ট শেষ করলাম! 🎉</p></div>
+                                    <div class="chat-bubble p-3 rounded-lg border-l-purple-500" style="border-left-color: #bc13fe;"><p class="text-xs text-gray-300"><strong>সুমাইয়া:</strong> গ্রাফিক্স ডিজাইনের রিসোর্স লাগবে।</p></div>
+                                    <div class="chat-bubble p-3 rounded-lg border-l-pink-500" style="border-left-color: #ff0055;"><p class="text-xs text-gray-300"><strong>আরিফ:</strong> নতুন লেসনটা অসাধারন ছিল! 🔥</p></div>
+                                     <!-- Duplicate for loop -->
+                                    <div class="chat-bubble p-3 rounded-lg"><p class="text-xs text-gray-300"><strong>রাফসান:</strong> পাইথন প্রজেক্ট শেষ করলাম! 🎉</p></div>
+                                    <div class="chat-bubble p-3 rounded-lg border-l-purple-500" style="border-left-color: #bc13fe;"><p class="text-xs text-gray-300"><strong>সুমাইয়া:</strong> গ্রাফিক্স ডিজাইনের রিসোর্স লাগবে।</p></div>
+                                    <div class="chat-bubble p-3 rounded-lg border-l-pink-500" style="border-left-color: #ff0055;"><p class="text-xs text-gray-300"><strong>আরিফ:</strong> নতুন লেসনটা অসাধারন ছিল! 🔥</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="w-full py-20 px-4">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="glass-panel rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><i data-lucide="send" class="text-neon-blue"></i> মেসেজ পাঠান</h3>
+                    <form class="space-y-6" action="https://formspree.io/f/xldbznvv" method="POST">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <input type="text" name="name" placeholder="নাম" class="w-full px-4 py-3 rounded-lg bg-black/20 border border-white/10 text-white focus:border-neon-blue focus:outline-none" required>
+                            <input type="email" name="email" placeholder="ইমেইল" class="w-full px-4 py-3 rounded-lg bg-black/20 border border-white/10 text-white focus:border-neon-blue focus:outline-none" required>
+                        </div>
+                        <textarea name="message" rows="4" placeholder="আপনার বার্তা..." class="w-full px-4 py-3 rounded-lg bg-black/20 border border-white/10 text-white focus:border-neon-blue focus:outline-none resize-none" required></textarea>
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 border border-neon-blue/50 text-neon-blue font-bold rounded-lg uppercase tracking-widest hover:bg-neon-blue hover:text-black transition-all">সিগন্যাল পাঠান <i data-lucide="zap" class="w-4 h-4 inline ml-2"></i></button>
+                    </form>
+                </div>
+                <div class="space-y-8">
+                    <div class="p-6 rounded-xl bg-white/5 border border-white/5 flex items-center gap-6 group hover:border-neon-blue/30 transition-all">
+                        <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-neon-blue"><i data-lucide="map-pin" class="w-6 h-6"></i></div>
+                        <div><h4 class="text-gray-400 text-xs font-mono uppercase">হেডকোয়ার্টার</h4><p class="text-white text-lg font-bold">ঢাকা, বাংলাদেশ</p></div>
+                    </div>
+                    <div class="h-64 rounded-xl flex items-center justify-center relative border border-neon-blue/30 bg-neon-blue/5 overflow-hidden">
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(0,243,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,243,255,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-30"></div>
+                        <div class="relative z-10 flex flex-col items-center animate-bounce">
+                            <i data-lucide="map-pin" class="w-8 h-8 text-neon-pink fill-neon-pink drop-shadow-[0_0_10px_#ff0055]"></i>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-[10px] font-mono text-neon-blue border border-neon-blue px-2 py-1 rounded">LIVE MAP</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="w-full pt-16 pb-8 px-4 bg-black/40 border-t border-white/5">
+            <div class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8">
+                <p class="text-gray-600 text-sm">© ২০২৫ ফিউচার লার্নিং প্ল্যাটফর্ম। সর্বস্বত্ব সংরক্ষিত।</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Login/Limit Modal -->
+    <div id="limit-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="glass-panel max-w-md w-full p-8 rounded-2xl relative border border-neon-pink/50 shadow-[0_0_50px_rgba(255,0,85,0.2)] animate-pulse-slow">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-neon-pink/20 rounded-full flex items-center justify-center mx-auto mb-6"><i data-lucide="lock" class="w-8 h-8 text-neon-pink"></i></div>
+                <h3 id="modal-title" class="text-2xl font-bold text-white mb-2">অ্যাক্সেস লিমিট শেষ!</h3>
+                <p id="modal-body" class="text-gray-300 mb-6">দুঃখিত, আপনি আপনার ফ্রি লিমিট ব্যবহার করে ফেলেছেন। আরও কন্টেন্ট দেখতে দয়া করে সাইন-আপ করুন।</p>
+                <div class="flex gap-4 justify-center">
+                    <a href="login.html" class="px-6 py-3 bg-neon-pink text-white font-bold rounded-lg hover:bg-neon-pink/80 transition-all">সাইন আপ</a>
+                    <a href="login.html" class="px-6 py-3 border border-white/20 text-white font-bold rounded-lg hover:bg-white/10 transition-all">লগইন</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // Particle Background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2; this.color = Math.random() > 0.5 ? '#00f3ff' : '#bc13fe';
+                this.alpha = Math.random() * 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function initParticles() { particles = []; for(let i=0; i<50; i++) particles.push(new Particle()); }
+        function animateParticles() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateParticles); }
+        window.addEventListener('resize', ()=>{resize();initParticles();});
+        resize(); initParticles(); animateParticles();
+
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
+        document.getElementById('mobile-premium-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-premium-menu');
+            menu.classList.toggle('open');
+            document.getElementById('mobile-chevron').style.transform = menu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+
+        // Login & Gate Logic
+        function requireLogin() {
+            document.getElementById('modal-title').innerText = "প্রিমিয়াম অ্যাক্সেস";
+            document.getElementById('modal-body').innerText = "এই প্রজেক্টটি অ্যাক্সেস করতে আপনাকে অবশ্যই লগইন করতে হবে।";
+            document.getElementById('limit-modal').style.display = 'flex';
+        }
+
+        function checkAccess(type, link) {
+            const MAX_LIMIT = 1;
+            const storageKey = type === 'video' ? 'video_plays' : 'pdf_downloads';
+            let currentCount = parseInt(localStorage.getItem(storageKey) || '0');
+
+            if (currentCount < MAX_LIMIT) {
+                localStorage.setItem(storageKey, currentCount + 1);
+                if (type === 'video') alert("ভিডিও প্লে হচ্ছে... (ফ্রি লিমিট: ১/১)");
+                else if (link) window.open(link, '_blank');
+            } else {
+                document.getElementById('modal-title').innerText = "অ্যাক্সেস লিমিট শেষ!";
+                document.getElementById('modal-body').innerText = "দুঃখিত, আপনি আপনার ফ্রি লিমিট ব্যবহার করে ফেলেছেন। আরও কন্টেন্ট দেখতে দয়া করে সাইন-আপ করুন।";
+                document.getElementById('limit-modal').style.display = 'flex';
+            }
+        }
+        function closeModal() { document.getElementById('limit-modal').style.display = 'none'; }
+    </script>
+</body>
+</html>
