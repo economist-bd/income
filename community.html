@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কমিউনিটি হাব - ফিউচারিস্টিক সাপোর্ট</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"Orbitron"', 'monospace'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            pink: '#ff0055',
+                            gold: '#ffd700',
+                        },
+                        dark: {
+                            bg: '#050510',
+                            card: 'rgba(20, 20, 35, 0.6)',
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 15s linear infinite',
+                        'float': 'float 5s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'scroll-up': 'scrollUp 20s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 10px rgba(0, 243, 255, 0.2)' },
+                            '50%': { boxShadow: '0 0 25px rgba(0, 243, 255, 0.6)' },
+                        },
+                        scrollUp: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050510;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Abstract Background Shapes */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+        }
+
+        /* Glass Cards */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Chat Bubbles Style */
+        .chat-bubble {
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.05));
+            border-left: 3px solid #00f3ff;
+        }
+
+        /* Avatar Ring */
+        .avatar-ring {
+            position: relative;
+        }
+        .avatar-ring::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00f3ff, #bc13fe);
+            z-index: -1;
+            animation: spin 4s linear infinite;
+        }
+
+        /* Scrollbar hiding for chat feed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative flex flex-col items-center">
+
+    <!-- Background Ambient Light -->
+    <div class="orb w-[500px] h-[500px] top-[-100px] left-[-100px] bg-neon-purple/20"></div>
+    <div class="orb w-[600px] h-[600px] bottom-[-200px] right-[-200px] bg-neon-blue/20"></div>
+    
+    <!-- Grid Overlay -->
+    <div class="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none z-0"></div>
+    
+    <main class="relative z-10 w-full max-w-7xl px-4 py-12 md:py-20 flex flex-col gap-16">
+        
+        <!-- Hero Section -->
+        <div class="text-center space-y-6 animate-float">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neon-blue/30 bg-neon-blue/5 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-neon-blue text-xs md:text-sm font-mono tracking-wider">১,৪৫০+ শিক্ষার্থী অনলাইনে আছে</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-neon-blue to-neon-purple">গ্লোবাল লার্নিং</span>
+                <br>
+                <span class="text-white">নেটওয়ার্ক</span>
+            </h1>
+            
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                হাজারো শিক্ষার্থীর সাথে যুক্ত হন এবং অভিজ্ঞতা শেয়ার করুন। এখানে আমরা সবাই একসাথে শিখি, একসাথে বড় হই।
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 pt-4">
+                <a href="https://economist-bd.github.io/income/" target="_blank" class="group relative px-8 py-4 bg-neon-blue text-black font-bold rounded-lg overflow-hidden transition-all hover:scale-105">
+                    <span class="relative z-10 flex items-center gap-2">
+                        কমিউনিটিতে যোগ দিন <i data-lucide="users" class="w-5 h-5"></i>
+                    </span>
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                </a>
+                <a href="#forums" class="px-8 py-4 rounded-lg border border-white/20 hover:border-neon-purple text-white transition-all hover:bg-white/5 flex items-center gap-2">
+                    আলোচনা দেখুন <i data-lucide="message-square" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Interactive Dashboard Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+            
+            <!-- Left Side: Community Channels (Glass Panel) -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Stats Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="glass-panel p-4 rounded-xl text-center hover:border-neon-blue/50 transition-colors">
+                        <i data-lucide="globe" class="w-6 h-6 mx-auto mb-2 text-neon-blue"></i>
+                        <div class="text-2xl font-mono font-bold">১২টি</div>
+                        <div class="text-xs text-gray-400">দেশ</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl text-center hover:border-neon-purple/50 transition-colors">
+                        <i data-lucide="users" class="w-6 h-6 mx-auto mb-2 text-neon-purple"></i>
+                        <div class="text-2xl font-mono font-bold">৫০k+</div>
+                        <div class="text-xs text-gray-400">সদস্য</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl text-center hover:border-neon-pink/50 transition-colors">
+                        <i data-lucide="message-circle" class="w-6 h-6 mx-auto mb-2 text-neon-pink"></i>
+                        <div class="text-2xl font-mono font-bold">১.২m</div>
+                        <div class="text-xs text-gray-400">মেসেজ</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl text-center hover:border-neon-gold/50 transition-colors">
+                        <i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 text-neon-gold"></i>
+                        <div class="text-2xl font-mono font-bold">৯৮%</div>
+                        <div class="text-xs text-gray-400">সমাধান</div>
+                    </div>
+                </div>
+
+                <!-- Discussion Topics / Forums -->
+                <div id="forums" class="glass-panel rounded-2xl p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <i data-lucide="hash" class="text-neon-blue"></i> ট্রেন্ডিং টপিক
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Topic 1 -->
+                        <div class="group flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-transparent hover:border-neon-blue/30 cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-blue-500/20 p-3 rounded-lg text-blue-400">
+                                    <i data-lucide="code-2"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white group-hover:text-neon-blue transition-colors">প্রোগ্রামিং হেল্পলাইন</h4>
+                                    <p class="text-xs text-gray-400 mt-1">Python, JavaScript এবং অন্যান্য বিষয়ে আলোচনা</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-gray-500 bg-black/30 px-2 py-1 rounded">৩৫০+ নতুন পোস্ট</span>
+                        </div>
+
+                        <!-- Topic 2 -->
+                        <div class="group flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-transparent hover:border-neon-purple/30 cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-purple-500/20 p-3 rounded-lg text-purple-400">
+                                    <i data-lucide="briefcase"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white group-hover:text-neon-purple transition-colors">ফ্রিল্যান্সিং গাইডলাইন</h4>
+                                    <p class="text-xs text-gray-400 mt-1">মার্কেটপ্লেস টিপস এবং ক্লায়েন্ট ম্যানেজমেন্ট</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-gray-500 bg-black/30 px-2 py-1 rounded">১২০+ অনলাইন</span>
+                        </div>
+
+                        <!-- Topic 3 -->
+                        <div class="group flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-transparent hover:border-neon-pink/30 cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-pink-500/20 p-3 rounded-lg text-pink-400">
+                                    <i data-lucide="rocket"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white group-hover:text-neon-pink transition-colors">স্টার্টআপ টক</h4>
+                                    <p class="text-xs text-gray-400 mt-1">উদ্যোক্তাদের জন্য আইডিয়া শেয়ারিং জোন</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-gray-500 bg-black/30 px-2 py-1 rounded">৮৫+ নতুন পোস্ট</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Live Community Feed (Simulated) -->
+            <div class="lg:col-span-4">
+                <div class="glass-panel rounded-2xl h-full p-6 relative overflow-hidden flex flex-col">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <span class="relative flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            লাইভ অ্যাক্টিভিটি
+                        </h3>
+                        <span class="text-xs text-gray-500 font-mono">Real-time</span>
+                    </div>
+
+                    <!-- Scrolling Feed Container -->
+                    <div class="relative flex-1 overflow-hidden mask-gradient-b">
+                        <div class="space-y-4 animate-scroll-up" id="feed-container">
+                            <!-- Messages generated by JS will go here, placeholders below for non-JS -->
+                            
+                            <!-- Item 1 -->
+                            <div class="chat-bubble p-3 rounded-lg">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold">R</div>
+                                    <span class="text-xs font-bold text-neon-blue">রাফসান আহমেদ</span>
+                                    <span class="text-[10px] text-gray-500">এখনই</span>
+                                </div>
+                                <p class="text-xs text-gray-300">আমার প্রথম পাইথন প্রজেক্ট শেষ করলাম! ধন্যবাদ সবাইকে। 🎉</p>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="chat-bubble p-3 rounded-lg border-l-purple-500" style="border-left-color: #bc13fe;">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold">S</div>
+                                    <span class="text-xs font-bold text-neon-purple">সুমাইয়া আক্তার</span>
+                                    <span class="text-[10px] text-gray-500">২ মি. আগে</span>
+                                </div>
+                                <p class="text-xs text-gray-300">কেউ কি গ্রাফিক্স ডিজাইনের ভালো রিসোর্স দিতে পারবেন?</p>
+                            </div>
+
+                             <!-- Item 3 -->
+                             <div class="chat-bubble p-3 rounded-lg border-l-pink-500" style="border-left-color: #ff0055;">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold">A</div>
+                                    <span class="text-xs font-bold text-neon-pink">আরিফ হাসান</span>
+                                    <span class="text-[10px] text-gray-500">৫ মি. আগে</span>
+                                </div>
+                                <p class="text-xs text-gray-300">নতুন লেসনটা অসাধারন ছিল! 🔥</p>
+                            </div>
+                            
+                            <!-- Duplicate items for smooth loop -->
+                            <div class="chat-bubble p-3 rounded-lg">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold">R</div>
+                                    <span class="text-xs font-bold text-neon-blue">রাফসান আহমেদ</span>
+                                    <span class="text-[10px] text-gray-500">এখনই</span>
+                                </div>
+                                <p class="text-xs text-gray-300">আমার প্রথম পাইথন প্রজেক্ট শেষ করলাম! ধন্যবাদ সবাইকে। 🎉</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Input Mockup -->
+                    <div class="mt-4 pt-4 border-t border-white/10">
+                        <div class="h-10 bg-white/5 rounded-lg w-full flex items-center px-3 gap-2 opacity-50 cursor-not-allowed">
+                            <i data-lucide="message-square" class="w-4 h-4 text-gray-500"></i>
+                            <span class="text-xs text-gray-500">মেসেজ লিখতে সাইন ইন করুন...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-gray-600 text-xs w-full relative z-10 bg-black/20 backdrop-blur-sm">
+        &copy; ২০২৫ কমিউনিটি হাব। কানেক্টিং ফিউচার।
+    </footer>
+
+    <!-- Initialize Icons & Script for Feed Simulation -->
+    <script>
+        lucide.createIcons();
+
+        // Feed Duplication for seamless scroll animation
+        const feedContainer = document.getElementById('feed-container');
+        const content = feedContainer.innerHTML;
+        // Duplicate content 4 times to ensure it fills height for animation
+        feedContainer.innerHTML = content + content + content + content;
+    </script>
+</body>
+</html>
