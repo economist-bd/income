@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভবিষ্যতের যাত্রা শুরু করুন</title>
+    
+    <!-- Fonts: Hind Siliguri for Bangla, Orbitron for futuristic English headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration for Custom Colors and Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"Orbitron"', 'monospace'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            pink: '#ff0055',
+                        },
+                        dark: {
+                            bg: '#050510',
+                            card: 'rgba(255, 255, 255, 0.05)',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            'from': { textShadow: '0 0 10px #00f3ff, 0 0 20px #00f3ff' },
+                            'to': { textShadow: '0 0 20px #bc13fe, 0 0 30px #bc13fe' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050510;
+            overflow-x: hidden;
+            margin: 0;
+            color: white;
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(17, 25, 40, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.125);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050510;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f3ff;
+            border-radius: 4px;
+        }
+
+        /* Neon Button Glow */
+        .neon-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .neon-button:hover::before {
+            left: 100%;
+        }
+        .neon-button:hover {
+            box-shadow: 0 0 20px #00f3ff, 0 0 40px #00f3ff;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-center relative selection:bg-neon-pink selection:text-white">
+
+    <!-- Background Animation Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center h-full text-center">
+        
+        <!-- Decorative Top Element -->
+        <div class="absolute top-10 left-1/2 transform -translate-x-1/2 w-px h-24 bg-gradient-to-b from-transparent to-neon-blue opacity-50"></div>
+        <div class="absolute top-36 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full bg-neon-blue shadow-[0_0_10px_#00f3ff]"></div>
+
+        <!-- Hero Section -->
+        <div class="glass-card rounded-2xl p-8 md:p-16 mt-10 md:mt-0 w-full max-w-4xl border-t border-white/10 animate-fade-in-up">
+            
+            <!-- Futuristic Badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-purple/50 bg-neon-purple/10 mb-8 backdrop-blur-sm">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-pink opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-neon-pink"></span>
+                </span>
+                <span class="text-xs md:text-sm font-mono tracking-widest text-neon-blue uppercase">নেক্সট-জেন লার্নিং</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span class="block text-white mb-2">আজই শুরু করুন</span>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-blue via-purple-400 to-neon-pink animate-gradient">
+                    আপনার যাত্রা
+                </span>
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                <span class="text-neon-blue font-semibold">৭ দিনের ফ্রি ট্রায়ালে</span> যোগ দিন এবং আমাদের প্রিমিয়াম লাইব্রেরির <span class="text-white border-b border-neon-pink">যেকোনো কোর্স</span> সম্পূর্ণ বিনামূল্যে দেখুন।
+            </p>
+
+            <!-- CTA Button -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <a href="https://economist-bd.github.io/income/" target="_blank" class="neon-button group relative px-8 py-4 bg-transparent border border-neon-blue text-neon-blue font-bold rounded-lg uppercase tracking-wider text-sm md:text-base overflow-hidden">
+                    <span class="absolute inset-0 w-full h-full bg-neon-blue/10 group-hover:bg-neon-blue/20 transition-all duration-300"></span>
+                    <span class="relative flex items-center gap-3">
+                        ফ্রি ট্রায়াল শুরু করুন
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </span>
+                </a>
+                
+                <div class="flex items-center gap-2 text-sm text-gray-400 font-mono">
+                    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>ক্রেডিট কার্ডের প্রয়োজন নেই</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Elements (Abstract Visuals) -->
+        <div class="absolute -top-10 -right-10 w-24 h-24 bg-neon-purple rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-neon-blue rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+        <!-- Stats Section -->
+        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-4xl text-center z-10">
+            <div class="p-4 border border-white/5 rounded-lg bg-white/5 backdrop-blur-sm hover:border-neon-blue/50 transition-colors duration-300">
+                <div class="text-2xl md:text-3xl font-mono font-bold text-white mb-1">৫০+</div>
+                <div class="text-xs text-gray-400">নতুন কোর্স</div>
+            </div>
+            <div class="p-4 border border-white/5 rounded-lg bg-white/5 backdrop-blur-sm hover:border-neon-purple/50 transition-colors duration-300">
+                <div class="text-2xl md:text-3xl font-mono font-bold text-white mb-1">১০k+</div>
+                <div class="text-xs text-gray-400">সদস্য</div>
+            </div>
+            <div class="p-4 border border-white/5 rounded-lg bg-white/5 backdrop-blur-sm hover:border-neon-pink/50 transition-colors duration-300">
+                <div class="text-2xl md:text-3xl font-mono font-bold text-white mb-1">২৪/৭</div>
+                <div class="text-xs text-gray-400">সাপোর্ট</div>
+            </div>
+             <div class="p-4 border border-white/5 rounded-lg bg-white/5 backdrop-blur-sm hover:border-cyan-400/50 transition-colors duration-300">
+                <div class="text-2xl md:text-3xl font-mono font-bold text-white mb-1">৪.৯</div>
+                <div class="text-xs text-gray-400">রেটিং</div>
+            </div>
+        </div>
+        
+    </main>
+
+    <footer class="absolute bottom-4 text-center text-gray-600 text-xs z-10 w-full">
+        &copy; ২০২৫ ফিউচার লার্নিং প্ল্যাটফর্ম। সর্বস্বত্ব সংরক্ষিত।
+    </footer>
+
+    <!-- Script for Particle Background Animation -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        const particleCount = window.innerWidth < 768 ? 50 : 100; // Less particles on mobile
+        const connectionDistance = 150;
+        const mouse = { x: null, y: null };
+
+        // Resize function
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.color = Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'; // Neon Blue or Purple
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // Mouse interaction
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 200) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (200 - distance) / 200;
+                        const directionX = forceDirectionX * force * 0.5;
+                        const directionY = forceDirectionY * force * 0.5;
+                        this.vx -= directionX;
+                        this.vy -= directionY;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        function init() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(100, 200, 255, ${1 - distance/connectionDistance})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', () => {
+            resize();
+            init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+        
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // Start
+        resize();
+        init();
+        animate();
+    </script>
+</body>
+</html>
