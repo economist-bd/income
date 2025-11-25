@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফিউচারিস্টিক অনলাইন আয় প্রশিক্ষণ</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"Orbitron"', 'monospace'],
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            purple: '#bc13fe',
+                            pink: '#ff0055',
+                            green: '#0aff68',
+                            yellow: '#fcee0a',
+                        },
+                        dark: {
+                            bg: '#050510',
+                            card: 'rgba(20, 20, 35, 0.6)',
+                            border: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'scroll-left': 'scroll-left 25s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 10px rgba(0, 243, 255, 0.2)' },
+                            'to': { boxShadow: '0 0 20px rgba(0, 243, 255, 0.6), 0 0 10px rgba(188, 19, 254, 0.4)' }
+                        },
+                        'scroll-left': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    },
+                    aspectRatio: {
+                        'book': '1280 / 714',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050510;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Particle Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050510;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #00f3ff, #bc13fe);
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .glass-nav {
+            background: rgba(5, 5, 16, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Neon Text Utilities */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+        
+        /* Card Hover Effects */
+        .hover-card-effect {
+            transition: all 0.3s ease;
+        }
+        .hover-card-effect:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+        }
+
+        /* Thumbnail Image Container */
+        .thumbnail-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .thumbnail-container img {
+            transition: transform 0.5s ease;
+        }
+        .thumbnail-container:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative selection:bg-neon-pink selection:text-white">
+
+    <!-- Animated Background -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Ambient Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-purple/20 rounded-full blur-[150px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-neon-blue/20 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+    <div id="app-container" class="w-full relative z-10">
+        
+        <!-- Navigation -->
+        <nav id="navbar" class="w-full fixed top-0 z-50 glass-nav transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex items-center space-x-3 group cursor-pointer">
+                        <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-neon-blue/50 transition-all">
+                            <span class="text-2xl animate-pulse-slow">📚</span>
+                            <div class="absolute -inset-1 bg-neon-blue/20 blur opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                        </div>
+                        <div>
+                            <h1 class="text-lg md:text-xl font-bold font-mono tracking-wider text-white group-hover:text-neon-blue transition-colors">ফিউচার লার্নিং</h1>
+                            <p class="text-[10px] md:text-xs text-gray-400 font-mono tracking-[0.2em] uppercase">শিখুন এবং আয় করুন</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="#home" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">হোম</a>
+                        <a href="#courses" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">কোর্স</a>
+                        <a href="#features" class="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all">ফিচার</a>
+                        <a href="#contact" class="px-4 py-2 text-sm font-medium text-neon-blue border border-neon-blue/30 rounded-lg hover:bg-neon-blue/10 hover:shadow-[0_0_15px_rgba(0,243,255,0.3)] transition-all ml-2">যোগাযোগ</a>
+                    </div>
+
+                    <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-300 hover:text-white">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-dark-bg/95 backdrop-blur-xl">
+                <div class="px-4 py-4 space-y-2">
+                    <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">হোম</a>
+                    <a href="#courses" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">কোর্স</a>
+                    <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">ফিচার</a>
+                    <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-neon-blue bg-neon-blue/5 border border-neon-blue/20">যোগাযোগ</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Scrolling News Bar (Holographic Strip) -->
+        <div class="pt-20">
+            <div class="w-full py-2 bg-gradient-to-r from-transparent via-neon-purple/10 to-transparent border-y border-white/5 relative overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 flex items-center">
+                    <div class="flex items-center gap-2 px-3 py-1 bg-neon-pink/10 border border-neon-pink/30 rounded text-neon-pink text-xs font-bold font-mono uppercase mr-4 z-10 backdrop-blur-sm shadow-[0_0_10px_rgba(255,0,85,0.3)]">
+                        <span class="animate-pulse">●</span> লাইভ আপডেট
+                    </div>
+                    <div class="scrolling-news flex-1 overflow-hidden relative h-6">
+                        <div class="news-content absolute whitespace-nowrap animate-scroll-left text-sm text-gray-300 font-mono flex items-center h-full">
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="zap" class="w-3 h-3 text-neon-yellow"></i> নতুন ব্যাচ শুরু হচ্ছে ১৫ ডিসেম্বর - এখনই ভর্তি হন!</span>
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="star" class="w-3 h-3 text-neon-blue"></i> ১০,০০০+ শিক্ষার্থী সফল ক্যারিয়ার শুরু করেছেন</span>
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="trophy" class="w-3 h-3 text-neon-purple"></i> এই মাসের সেরা শিক্ষার্থী পুরস্কার</span>
+                            <span class="mx-8 flex items-center gap-2"><i data-lucide="rocket" class="w-3 h-3 text-neon-green"></i> আসছে: "অ্যাফিলিয়েট মার্কেটিং মাস্টারি"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section id="home" class="w-full py-16 md:py-24 px-4 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                
+                <div class="order-2 md:order-1 relative z-10 animate-float">
+                    <div class="mb-6 inline-flex items-center gap-3 p-2 pr-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-neon-blue to-neon-purple flex items-center justify-center text-xl shadow-lg">👨‍💻</div>
+                        <div>
+                            <p class="text-[10px] text-gray-400 font-mono uppercase tracking-widest">প্রধান প্রশিক্ষক</p>
+                            <h3 class="text-sm font-bold text-white">মোঃ মঞ্জুরুল হক স্যার <span class="text-neon-blue text-xs font-normal">(ওয়েব ডেভেলপার)</span></h3>
+                        </div>
+                    </div>
+
+                    <h2 class="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+                        <span class="text-white">অনলাইন থেকে</span> <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-blue via-white to-neon-purple text-glow">আয় করতে শিখুন</span>
+                    </h2>
+                    
+                    <p class="text-gray-400 text-lg mb-8 max-w-lg font-light leading-relaxed">
+                        প্রফেশনাল প্রশিক্ষকদের থেকে শিখুন এবং আপনার ফিউচার ক্যারিয়ার শুরু করুন। প্রি-রেকর্ডেড ভিডিও, প্র্যাকটিস ম্যাটেরিয়াল এবং ভেরিফাইড সার্টিফিকেট।
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="login.html" class="px-8 py-4 bg-neon-blue text-black font-bold rounded-lg relative overflow-hidden group hover:scale-105 transition-transform">
+                            <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></span>
+                            <span class="flex items-center gap-2">এখনই শুরু করুন <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                        </a>
+                        <a href="#courses" class="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-lg hover:bg-white/5 hover:border-neon-purple transition-all flex items-center gap-2">
+                            <i data-lucide="play-circle" class="w-4 h-4 text-neon-purple"></i> ডেমো দেখুন
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Futuristic Video Container -->
+                <div class="order-1 md:order-2 relative group">
+                    <!-- Glow Effect behind -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+                    
+                    <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+                        <!-- Holographic Corner accents -->
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-neon-blue z-20"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-neon-purple z-20"></div>
+                        
+                        <div class="aspect-video relative bg-gray-900">
+                             <!-- Fallback Image/Content as specified in previous file logic -->
+                             <video id="hero-video" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" autoplay muted loop playsinline poster="https://img.freepik.com/free-photo/programming-background-with-person-working-with-codes-computer_23-2150010125.jpg">
+                                <source src="./videos/hero-video.mp4" type="video/mp4">
+                            </video>
+                            
+                            <!-- Play Overlay -->
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="w-20 h-20 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                                    <div class="w-0 h-0 border-t-[10px] border-t-transparent border-l-[20px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section (Holographic HUD) -->
+        <section class="w-full py-10 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="glass-panel rounded-2xl p-8 border-t border-neon-blue/20">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="text-center relative">
+                            <h3 class="text-3xl md:text-4xl font-mono font-bold text-white mb-2">৫০০+</h3>
+                            <p class="text-neon-blue text-xs uppercase tracking-widest">ভিডিও ক্লাস</p>
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/10 hidden md:block"></div>
+                        </div>
+                        <div class="text-center relative">
+                            <h3 class="text-3xl md:text-4xl font-mono font-bold text-white mb-2">১০k+</h3>
+                            <p class="text-neon-purple text-xs uppercase tracking-widest">সফল শিক্ষার্থী</p>
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/10 hidden md:block"></div>
+                        </div>
+                        <div class="text-center relative">
+                            <h3 class="text-3xl md:text-4xl font-mono font-bold text-white mb-2">৫০+</h3>
+                            <p class="text-neon-pink text-xs uppercase tracking-widest">এক্সপার্ট মেন্টর</p>
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/10 hidden md:block"></div>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-3xl md:text-4xl font-mono font-bold text-white mb-2">৯৮%</h3>
+                            <p class="text-neon-green text-xs uppercase tracking-widest">সন্তুষ্টি রেট</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PDF Books Section (Upgraded with Thumbnails 1280x714) -->
+        <section id="pdf-books" class="w-full py-20 px-4 relative">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-neon-purple/5 to-transparent pointer-events-none"></div>
+            
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-mono text-neon-blue tracking-[0.5em] uppercase mb-2">নলেজ বেস</h2>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white">ফ্রি পিডিএফ লাইব্রেরি</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Book Card 1 -->
+                    <div class="glass-panel rounded-xl overflow-hidden hover-card-effect group flex flex-col h-full">
+                        <!-- Thumbnail 1280x714 Ratio -->
+                        <div class="thumbnail-container aspect-[1280/714] w-full bg-gray-900 relative">
+                            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1280&h=714&fit=crop" alt="ফ্রিল্যান্সিং গাইড" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
+                            <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white border border-white/10">PDF</div>
+                        </div>
+                        
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-blue transition-colors">ফ্রিল্যান্সিং গাইড ২০২৫</h3>
+                            <p class="text-xs text-gray-400 mb-3 font-mono">লেখক: জাহিদুল ইসলাম • ১২৫ পৃষ্ঠা</p>
+                            <p class="text-sm text-gray-300 mb-6 flex-1">Upwork ও Fiverr-এ কাজ পাওয়ার আধুনিক কৌশল এবং পোর্টফোলিও তৈরির গাইডলাইন।</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mt-auto">
+                                <a href="https://drive.google.com/file/d/sample1/view" target="_blank" class="flex items-center justify-center gap-2 py-2 rounded-lg border border-white/20 hover:border-neon-blue text-sm text-gray-300 hover:text-white transition-all bg-white/5 hover:bg-white/10">
+                                    <i data-lucide="eye" class="w-4 h-4"></i> দেখুন
+                                </a>
+                                <a href="https://drive.google.com/file/d/sample1" target="_blank" class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neon-blue/10 hover:bg-neon-blue/20 text-neon-blue border border-neon-blue/30 text-sm font-bold transition-all">
+                                    <i data-lucide="download" class="w-4 h-4"></i> ডাউনলোড
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Card 2 -->
+                    <div class="glass-panel rounded-xl overflow-hidden hover-card-effect group flex flex-col h-full">
+                        <div class="thumbnail-container aspect-[1280/714] w-full bg-gray-900 relative">
+                            <img src="https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=1280&h=714&fit=crop" alt="ডিজিটাল মার্কেটিং" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
+                            <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white border border-white/10">PDF</div>
+                        </div>
+                        
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-purple transition-colors">ডিজিটাল মার্কেটিং ব্লুপ্রিন্ট</h3>
+                            <p class="text-xs text-gray-400 mb-3 font-mono">লেখক: সাকিব আহমেদ • ১৫০ পৃষ্ঠা</p>
+                            <p class="text-sm text-gray-300 mb-6 flex-1">Facebook ও Instagram অ্যালগরিদম হ্যাক এবং অ্যাডভান্সড কনভার্শন ফানেল।</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mt-auto">
+                                <a href="https://drive.google.com/file/d/sample2/view" target="_blank" class="flex items-center justify-center gap-2 py-2 rounded-lg border border-white/20 hover:border-neon-purple text-sm text-gray-300 hover:text-white transition-all bg-white/5 hover:bg-white/10">
+                                    <i data-lucide="eye" class="w-4 h-4"></i> দেখুন
+                                </a>
+                                <a href="https://drive.google.com/file/d/sample2" target="_blank" class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neon-purple/10 hover:bg-neon-purple/20 text-neon-purple border border-neon-purple/30 text-sm font-bold transition-all">
+                                    <i data-lucide="download" class="w-4 h-4"></i> ডাউনলোড
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Card 3 -->
+                    <div class="glass-panel rounded-xl overflow-hidden hover-card-effect group flex flex-col h-full">
+                        <div class="thumbnail-container aspect-[1280/714] w-full bg-gray-900 relative">
+                            <img src="https://images.unsplash.com/photo-1626785774573-4b799314346d?q=80&w=1280&h=714&fit=crop" alt="গ্রাফিক ডিজাইন" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent"></div>
+                            <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-mono text-white border border-white/10">PDF</div>
+                        </div>
+                        
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-neon-pink transition-colors">ফিউচারিস্টিক ডিজাইন</h3>
+                            <p class="text-xs text-gray-400 mb-3 font-mono">লেখক: তানভীর রহমান • ২০০ পৃষ্ঠা</p>
+                            <p class="text-sm text-gray-300 mb-6 flex-1">AI টুলস এবং মডার্ন টেকনিক ব্যবহার করে গ্রাফিক ডিজাইন মাস্টারি।</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mt-auto">
+                                <a href="https://drive.google.com/file/d/sample3/view" target="_blank" class="flex items-center justify-center gap-2 py-2 rounded-lg border border-white/20 hover:border-neon-pink text-sm text-gray-300 hover:text-white transition-all bg-white/5 hover:bg-white/10">
+                                    <i data-lucide="eye" class="w-4 h-4"></i> দেখুন
+                                </a>
+                                <a href="https://drive.google.com/file/d/sample3" target="_blank" class="flex items-center justify-center gap-2 py-2 rounded-lg bg-neon-pink/10 hover:bg-neon-pink/20 text-neon-pink border border-neon-pink/30 text-sm font-bold transition-all">
+                                    <i data-lucide="download" class="w-4 h-4"></i> ডাউনলোড
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="w-full py-20 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                    <div>
+                        <h2 class="text-sm font-mono text-neon-purple tracking-[0.5em] uppercase mb-2">স্কিল ডেভেলপমেন্ট</h2>
+                        <h2 class="text-3xl md:text-5xl font-bold text-white">জনপ্রিয় কোর্স সমূহ</h2>
+                    </div>
+                    <button class="px-6 py-2 rounded-full border border-white/20 hover:border-neon-purple text-sm hover:bg-white/5 transition-all text-gray-300">সকল কোর্স দেখুন</button>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Course 1 -->
+                    <div class="glass-panel rounded-2xl overflow-hidden hover-card-effect group">
+                        <div class="relative aspect-video">
+                            <img src="./images/course1-thumbnail.jpg" alt="ফ্রিল্যান্সিং" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80'">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-all duration-300">
+                                    <i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i>
+                                </div>
+                            </div>
+                            <span class="absolute top-3 left-3 bg-neon-blue text-black text-xs font-bold px-2 py-1 rounded">POPULAR</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-mono text-neon-blue border border-neon-blue/30 px-2 py-0.5 rounded">ফ্রিল্যান্সিং</span>
+                                <span class="flex items-center text-xs text-yellow-400 gap-1"><i data-lucide="star" class="w-3 h-3 fill-current"></i> ৪.৯</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">ফ্রিল্যান্সিং মাস্টারক্লাস</h3>
+                            <p class="text-sm text-gray-400 mb-4 line-clamp-2">Upwork, Fiverr এ কাজ পাওয়ার A টু Z গাইড। ৪৫টি ভিডিও ক্লাস।</p>
+                            <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-500 line-through">৳৪,৯৯৯</span>
+                                    <span class="text-lg font-bold text-white">৳২,৯৯৯</span>
+                                </div>
+                                <a href="#" class="px-4 py-2 bg-white/10 hover:bg-neon-blue hover:text-black rounded-lg text-sm font-bold transition-all border border-white/10">এনরোল করুন</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="glass-panel rounded-2xl overflow-hidden hover-card-effect group">
+                        <div class="relative aspect-video">
+                            <img src="./images/course2-thumbnail.jpg" alt="ইউটিউব" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80'">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-all duration-300">
+                                    <i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-mono text-neon-pink border border-neon-pink/30 px-2 py-0.5 rounded">কন্টেন্ট ক্রিয়েশন</span>
+                                <span class="flex items-center text-xs text-yellow-400 gap-1"><i data-lucide="star" class="w-3 h-3 fill-current"></i> ৪.৮</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">ইউটিউব মনিটাইজেশন</h3>
+                            <p class="text-sm text-gray-400 mb-4 line-clamp-2">চ্যানেল তৈরি থেকে মনিটাইজেশন পর্যন্ত। ৩৮টি ভিডিও ক্লাস।</p>
+                            <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-500 line-through">৳৩,৯৯৯</span>
+                                    <span class="text-lg font-bold text-white">৳২,৪৯৯</span>
+                                </div>
+                                <a href="#" class="px-4 py-2 bg-white/10 hover:bg-neon-pink hover:text-black rounded-lg text-sm font-bold transition-all border border-white/10">এনরোল করুন</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="glass-panel rounded-2xl overflow-hidden hover-card-effect group">
+                        <div class="relative aspect-video">
+                            <img src="./images/course3-thumbnail.jpg" alt="ডিজিটাল মার্কেটিং" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80'">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/30 flex items-center justify-center scale-75 group-hover:scale-100 transition-all duration-300">
+                                    <i data-lucide="play" class="w-5 h-5 text-white fill-white ml-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-mono text-neon-purple border border-neon-purple/30 px-2 py-0.5 rounded">মার্কেটিং</span>
+                                <span class="flex items-center text-xs text-yellow-400 gap-1"><i data-lucide="star" class="w-3 h-3 fill-current"></i> ৫.০</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">সোশ্যাল মিডিয়া মার্কেটিং</h3>
+                            <p class="text-sm text-gray-400 mb-4 line-clamp-2">Facebook, Instagram মার্কেটিং শিখুন। ৫০টি ভিডিও ক্লাস।</p>
+                            <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-500 line-through">৳৫,৯৯৯</span>
+                                    <span class="text-lg font-bold text-white">৳৩,৪৯৯</span>
+                                </div>
+                                <a href="#" class="px-4 py-2 bg-white/10 hover:bg-neon-purple hover:text-black rounded-lg text-sm font-bold transition-all border border-white/10">এনরোল করুন</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid (Futuristic Facilities) -->
+        <section id="features" class="w-full py-20 px-4 bg-black/20">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-white mb-4">আমাদের <span class="text-neon-green">ভবিষ্যৎ সুবিধা</span></h2>
+                    <p class="text-gray-400">শুধু কোর্স নয়, আমরা দিচ্ছি পূর্ণাঙ্গ ইকোসিস্টেম</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="feature-card p-8 rounded-2xl glass-panel group hover:bg-white/5 transition-all cursor-default">
+                        <div class="w-14 h-14 bg-neon-blue/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="video" class="w-7 h-7 text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">৪কে ভিডিও লেসন</h3>
+                        <p class="text-gray-400 text-sm">ক্রিস্টাল ক্লিয়ার ভিডিও কোয়ালিটি যা আপনাকে ক্লাসরুমের অনুভূতি দেবে।</p>
+                    </div>
+
+                    <div class="feature-card p-8 rounded-2xl glass-panel group hover:bg-white/5 transition-all cursor-default">
+                        <div class="w-14 h-14 bg-neon-purple/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="cpu" class="w-7 h-7 text-neon-purple"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">এআই মেন্টর সাপোর্ট</h3>
+                        <p class="text-gray-400 text-sm">২৪/৭ আমাদের এআই বটের মাধ্যমে তাৎক্ষণিক প্রশ্নের উত্তর পান।</p>
+                    </div>
+
+                    <div class="feature-card p-8 rounded-2xl glass-panel group hover:bg-white/5 transition-all cursor-default">
+                        <div class="w-14 h-14 bg-neon-pink/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="award" class="w-7 h-7 text-neon-pink"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">ব্লকচেইন সার্টিফিকেট</h3>
+                        <p class="text-gray-400 text-sm">সুরক্ষিত এবং যাচাইযোগ্য ডিজিটাল সার্টিফিকেট যা বিশ্বব্যাপী গ্রহণযোগ্য।</p>
+                    </div>
+                    
+                    <div class="feature-card p-8 rounded-2xl glass-panel group hover:bg-white/5 transition-all cursor-default">
+                        <div class="w-14 h-14 bg-neon-green/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="users" class="w-7 h-7 text-neon-green"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">গ্লোবাল কমিউনিটি</h3>
+                        <p class="text-gray-400 text-sm">হাজারো শিক্ষার্থীর সাথে নেটওয়ার্কিং এবং কোলাবোরেশন সুযোগ।</p>
+                    </div>
+
+                    <div class="feature-card p-8 rounded-2xl glass-panel group hover:bg-white/5 transition-all cursor-default">
+                        <div class="w-14 h-14 bg-neon-yellow/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="message-circle" class="w-7 h-7 text-neon-yellow"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">লাইভ Q&A সেশন</h3>
+                        <p class="text-gray-400 text-sm">বিশেষজ্ঞ মেন্টরদের সাথে সরাসরি কথা বলার সুযোগ।</p>
+                    </div>
+
+                    <div class="feature-card p-8 rounded-2xl glass-panel group hover:bg-white/5 transition-all cursor-default">
+                        <div class="w-14 h-14 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="bar-chart-2" class="w-7 h-7 text-cyan-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">স্মার্ট ট্র্যাকিং</h3>
+                        <p class="text-gray-400 text-sm">আপনার স্কিল গ্রোথ এবং লার্নিং প্রগ্রেস ড্যাশবোর্ডে দেখুন।</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="w-full py-20 px-4">
+            <div class="max-w-4xl mx-auto text-center rounded-3xl p-12 glass-panel border border-neon-blue/30 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-neon-blue/10 to-neon-purple/10"></div>
+                
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10">ফিউচার জার্নি শুরু করুন</h2>
+                <p class="text-xl text-gray-300 mb-8 relative z-10">৭ দিনের ফ্রি ট্রায়ালে যোগ দিন এবং যেকোনো কোর্স বিনামূল্যে দেখুন</p>
+                
+                <a href="https://example.com/free-trial" target="_blank" class="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-neon-blue to-neon-purple text-white font-bold text-lg rounded-full shadow-[0_0_20px_rgba(188,19,254,0.5)] hover:shadow-[0_0_40px_rgba(188,19,254,0.7)] hover:scale-105 transition-all relative z-10">
+                    <i data-lucide="zap" class="w-5 h-5 fill-current"></i> ফ্রি ট্রায়াল শুরু করুন
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="w-full pt-16 pb-8 px-4 bg-black/40 border-t border-white/5">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-4 gap-12 mb-12">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">📚</span>
+                            <h3 class="font-bold text-xl text-white">ফিউচার লার্নিং</h3>
+                        </div>
+                        <p class="text-gray-500 text-sm">বাংলাদেশের সেরা ফিউচারিস্টিক অনলাইন প্রশিক্ষণ প্ল্যাটফর্ম। আমরা গড়ছি আগামীর দক্ষ কারিগর।</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-lg text-white mb-4">কোর্সসমূহ</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">ফ্রিল্যান্সিং</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">ইউটিউব মাস্টারি</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">ডিজিটাল মার্কেটিং</a></li>
+                            <li><a href="#" class="hover:text-neon-blue transition-colors">গ্রাফিক ডিজাইন</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-lg text-white mb-4">রিসোর্স</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-neon-purple transition-colors">ফ্রি পিডিএফ</a></li>
+                            <li><a href="#" class="hover:text-neon-purple transition-colors">ব্লগ</a></li>
+                            <li><a href="#" class="hover:text-neon-purple transition-colors">কমিউনিটি</a></li>
+                            <li><a href="#" class="hover:text-neon-purple transition-colors">সাকসেস স্টোরি</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-bold text-lg text-white mb-4">যোগাযোগ</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> info@futurelearning.com</li>
+                            <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> +880 1XXX-XXXXXX</li>
+                            <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> ঢাকা, বাংলাদেশ</li>
+                        </ul>
+                        <div class="flex gap-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-white/5 pt-8 text-center">
+                    <p class="text-gray-600 text-sm">© ২০২৫ অনলাইন আয় প্রশিক্ষণ কেন্দ্র। সর্বস্বত্ব সংরক্ষিত।</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating Chat Bot -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button class="w-14 h-14 bg-gradient-to-r from-neon-blue to-neon-purple rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform animate-bounce">
+            <i data-lucide="bot" class="w-8 h-8 text-white"></i>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Particle Background Logic
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.color = Math.random() > 0.5 ? '#00f3ff' : '#bc13fe';
+                this.alpha = Math.random() * 0.5;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        // Start Animation
+        resize();
+        initParticles();
+        animateParticles();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
