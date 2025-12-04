@@ -174,7 +174,7 @@
                 authContainer.innerHTML = `<div class="flex items-center gap-3"><span class="text-sm font-semibold truncate max-w-[100px]">${user.displayName || 'User'}</span><button onclick="handleLogout()" class="text-sm text-red-500">লগ আউট</button></div>`;
             }
         } else {
-            authContainer.innerHTML = `<a href="login.html" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">লগিন / সাইনআপ</a>`;
+            authContainer.innerHTML = `<a href="log-regi.html" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">লগিন / সাইনআপ</a>`;
         }
     }
 
@@ -241,7 +241,7 @@
     window.handleAccess = (link, price = 0) => {
         if (!isRealUser) {
             alert("এই কন্টেন্ট দেখতে হলে আপনাকে আগে লগিন বা রেজিস্ট্রেশন করতে হবে।");
-            window.location.href = "login.html";
+            window.location.href = "log-regi.html";
             return;
         }
         if (price > 0) {
