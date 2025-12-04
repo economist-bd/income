@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন প্যানেল - ইকোনমিস্ট বিডি</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-js-sdk.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-js-sdk.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-js-sdk.js"></script>
+
+    <style>
+        body { font-family: 'Noto Sans Bengali', sans-serif; background: #f3f4f6; }
+        .sidebar { background: #1e293b; color: white; min-height: 100vh; }
+        .nav-item:hover { background: #334155; }
+        .active-nav { background: #2563eb; }
+    </style>
+</head>
+<body class="flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 sidebar fixed hidden md:block">
+        <div class="p-6 text-xl font-bold border-b border-gray-700">অ্যাডমিন প্যানেল</div>
+        <nav class="mt-6">
+            <a href="#" onclick="showSection('dashboard')" class="block px-6 py-3 nav-item active-nav">ড্যাশবোর্ড</a>
+            <a href="#" onclick="showSection('add-course')" class="block px-6 py-3 nav-item">কোর্স / ভিডিও যোগ করুন</a>
+            <a href="#" onclick="showSection('add-book')" class="block px-6 py-3 nav-item">পিডিএফ বই যোগ করুন</a>
+            <a href="index.html" class="block px-6 py-3 nav-item text-yellow-400">মেইন সাইটে যান <i class="fas fa-external-link-alt ml-2"></i></a>
+            <a href="#" onclick="handleLogout()" class="block px-6 py-3 nav-item text-red-400 mt-10">লগ আউট</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="w-full md:ml-64 p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="page-title" class="text-3xl font-bold text-gray-800">ড্যাশবোর্ড</h2>
+            <div class="text-sm text-gray-600">লগিন: <span class="font-bold">himel452@gmail.com</span></div>
+        </div>
+
+        <!-- Section: Dashboard (List Items) -->
+        <div id="section-dashboard" class="space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-bold mb-4 border-b pb-2">বর্তমান কন্টেন্ট তালিকা</h3>
+                <div id="content-list" class="space-y-3">
+                    <p class="text-gray-500">ডাটা লোড হচ্ছে...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Add Course/Video -->
+        <div id="section-add-course" class="hidden">
+            <div class="bg-white p-6 rounded-lg shadow max-w-2xl">
+                <h3 class="text-xl font-bold mb-6">নতুন ভিডিও টিউটোরিয়াল / কোর্স যোগ করুন</h3>
+                <form onsubmit="handleAddItem(event, 'video')" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1">শিরোনাম (Title)</label>
+                        <input type="text" name="title" required class="w-full border p-2 rounded" placeholder="যেমন: ডিজিটাল মার্কেটিং গাইড">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">বিবরণ (Description)</label>
+                        <textarea name="description" required class="w-full border p-2 rounded" placeholder="কোর্স সম্পর্কে বিস্তারিত..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">ভিডিও লিংক (YouTube/Drive)</label>
+                        <input type="url" name="link" required class="w-full border p-2 rounded" placeholder="https://youtube.com/...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">থাম্বনেইল ইমেজ লিংক (বা লোকাল ফাইল আপলোড)</label>
+                        <input type="file" id="video-thumb-file" accept="image/*" class="mb-2 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <input type="text" name="thumbnail" id="video-thumb-url" class="w-full border p-2 rounded" placeholder="অথবা ইমেজের সরাসরি লিংক দিন">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">ক্যাটাগরি</label>
+                        <select name="category" class="w-full border p-2 rounded">
+                            <option value="freelancing">ফ্রিল্যান্সিং</option>
+                            <option value="marketing">মার্কেটিং</option>
+                            <option value="design">ডিজাইন</option>
+                            <option value="development">ডেভেলপমেন্ট</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label class="block text-sm font-bold mb-1">দাম (টাকা) - ফ্রি হলে 0 লিখুন</label>
+                        <input type="number" name="price" value="0" class="w-full border p-2 rounded">
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">সেভ করুন</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Section: Add PDF Book -->
+        <div id="section-add-book" class="hidden">
+            <div class="bg-white p-6 rounded-lg shadow max-w-2xl">
+                <h3 class="text-xl font-bold mb-6">নতুন পিডিএফ বই যোগ করুন</h3>
+                <form onsubmit="handleAddItem(event, 'pdf')" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1">বইয়ের নাম</label>
+                        <input type="text" name="title" required class="w-full border p-2 rounded" placeholder="যেমন: এসইও বাংলা গাইড">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">লেখক</label>
+                        <input type="text" name="author" required class="w-full border p-2 rounded" placeholder="লেখকের নাম">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">ডাউনলোড/ড্রাইভ লিংক</label>
+                        <input type="url" name="link" required class="w-full border p-2 rounded" placeholder="https://drive.google.com/...">
+                    </div>
+                    <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">বই যোগ করুন</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrQ5Ultpye6h-qpSLFFGDSLFiCkwQKSVo",
+            authDomain: "income-58429.firebaseapp.com",
+            projectId: "income-58429",
+            storageBucket: "income-58429.firebasestorage.app",
+            messagingSenderId: "186620112474",
+            appId: "1:186620112474:web:90059a7195fb4812f53263"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = 'default-app-id';
+
+        const initAuth = async () => {
+             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                try { await signInWithCustomToken(auth, __initial_auth_token); } catch(e) {}
+            }
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email === 'himel452@gmail.com') {
+                loadContent();
+            } else if (user) {
+                alert("অ্যাক্সেস নেই! শুধুমাত্র অ্যাডমিন প্রবেশ করতে পারবে।");
+                window.location.href = 'login.html';
+            }
+        });
+
+        window.showSection = (id) => {
+            document.getElementById('section-dashboard').classList.add('hidden');
+            document.getElementById('section-add-course').classList.add('hidden');
+            document.getElementById('section-add-book').classList.add('hidden');
+            document.getElementById(`section-${id}`).classList.remove('hidden');
+            
+            const navs = document.querySelectorAll('.nav-item');
+            navs.forEach(n => n.classList.remove('active-nav'));
+            event.target.classList.add('active-nav');
+            if(id === 'dashboard') loadContent();
+        };
+
+        const fileInput = document.getElementById('video-thumb-file');
+        const urlInput = document.getElementById('video-thumb-url');
+        if(fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => { urlInput.value = reader.result; };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        window.handleAddItem = async (e, type) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "সেভ হচ্ছে...";
+            btn.disabled = true;
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            data.type = type;
+            data.createdAt = new Date().toISOString();
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'courses'), data);
+                alert("সফলভাবে যোগ করা হয়েছে!");
+                e.target.reset();
+            } catch (error) {
+                console.error(error);
+                if(error.code === 'permission-denied') {
+                     alert("পারমিশন এরর! ফায়ারবেস কনসোলে গিয়ে রুলস ঠিক করুন।");
+                } else {
+                     alert("ত্রুটি হয়েছে: " + error.message);
+                }
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        async function loadContent() {
+            const listContainer = document.getElementById('content-list');
+            listContainer.innerHTML = '<p class="text-gray-500">লোড হচ্ছে...</p>';
+
+            try {
+                const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'courses'));
+                const querySnapshot = await getDocs(q);
+                
+                listContainer.innerHTML = '';
+                if (querySnapshot.empty) {
+                    listContainer.innerHTML = '<p>কোন ডাটা নেই। নতুন যোগ করুন।</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center bg-gray-50 p-4 rounded border";
+                    div.innerHTML = `
+                        <div>
+                            <span class="text-xs font-bold uppercase ${item.type === 'video' ? 'text-blue-500' : 'text-green-500'}">[${item.type}]</span>
+                            <span class="font-semibold ml-2">${item.title}</span>
+                        </div>
+                        <button onclick="deleteItem('${docSnap.id}')" class="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded">
+                            <i class="fas fa-trash"></i> ডিলিট
+                        </button>
+                    `;
+                    listContainer.appendChild(div);
+                });
+            } catch (error) {
+                console.error(error);
+                if(error.code === 'permission-denied') {
+                    listContainer.innerHTML = '<p class="text-red-500 font-bold">ডাটা লোড ব্যর্থ। ফায়ারবেস রুলস চেক করুন।</p>';
+                } else {
+                    listContainer.innerHTML = '<p class="text-red-500">ডাটা লোড করতে ব্যর্থ।</p>';
+                }
+            }
+        }
+
+        window.deleteItem = async (id) => {
+            if(!confirm("আপনি কি নিশ্চিত এটি ডিলিট করতে চান?")) return;
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courses', id));
+                loadContent(); 
+            } catch (error) {
+                alert("ডিলিট করা যায়নি: " + error.message);
+            }
+        };
+
+        window.handleLogout = () => { signOut(auth).then(() => window.location.href = 'login.html'); };
+    </script>
+</body>
+</html>
