@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রতিদিন ১০ মিনিট! - পূর্ণাঙ্গ ই-বুক</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --text-body: #333333;
+            --text-light: #555555;
+            --bg-paper: #fdfbf7; /* বইয়ের পাতার কালার */
+            --white: #ffffff;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #ecf0f1;
+            color: var(--text-body);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar Navigation (TOC) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary);
+            color: var(--white);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .book-branding {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .book-branding h2 {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .toc-menu {
+            list-style: none;
+        }
+
+        .toc-menu li {
+            margin-bottom: 5px;
+        }
+
+        .toc-menu a {
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .toc-menu a:hover, .toc-menu a.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            padding-left: 20px;
+        }
+
+        .toc-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            background: #e0e5ec;
+            padding: 40px;
+        }
+
+        .book-page {
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            background: var(--bg-paper);
+            padding: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-radius: 5px; /* Slight round for modern look */
+            position: relative;
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.15rem; /* Readable font size */
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+            color: var(--text-body);
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* --- Specific Sections --- */
+        
+        /* Cover Page */
+        #cover {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 800px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: 10px solid #fff;
+            outline: 1px solid #ddd;
+        }
+
+        #cover h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        #cover .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #f1c40f;
+        }
+
+        #cover .author-name {
+            font-size: 1.2rem;
+            margin-top: 50px;
+            font-weight: bold;
+        }
+
+        /* Chapter Headers */
+        .chapter-header {
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .chapter-number {
+            font-size: 1rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: #eef9f0;
+            border-left: 4px solid #27ae60;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #2c3e50;
+        }
+
+        .challenge-box {
+            background: #fff8e1;
+            border: 2px dashed #f39c12;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        /* Back Cover */
+        #back-cover {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        #back-cover h2, #back-cover p {
+            color: white;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .cta-btn:hover {
+            background: #d35400;
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 10px;
+            }
+            .book-page {
+                padding: 30px;
+            }
+            #cover h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="book-branding">
+            <h2>বই: প্রতিদিন ১০ মিনিট</h2>
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 0;">অনলাইন আয়ের গাইড</p>
+        </div>
+        <ul class="toc-menu">
+            <li><a href="#cover"><i class="fas fa-book"></i> কভার পেজ</a></li>
+            <li><a href="#intro"><i class="fas fa-door-open"></i> ভূমিকা</a></li>
+            <li><a href="#chap1"><i class="fas fa-exclamation-triangle"></i> ১: প্রস্তুতি ও সতর্কতা</a></li>
+            <li><a href="#chap2"><i class="fas fa-mouse-pointer"></i> ২: মাইক্রো-টাস্কিং</a></li>
+            <li><a href="#chap3"><i class="fas fa-camera"></i> ৩: স্মার্টফোন ফটোগ্রাফি</a></li>
+            <li><a href="#chap4"><i class="fas fa-share-alt"></i> ৪: এফিলিয়েট মার্কেটিং</a></li>
+            <li><a href="#chap5"><i class="fas fa-video"></i> ৫: কন্টেন্ট ক্রিয়েশন</a></li>
+            <li><a href="#chap6"><i class="fas fa-graduation-cap"></i> ৬: স্কিল ডেভেলপমেন্ট</a></li>
+            <li><a href="#chap7"><i class="fas fa-coins"></i> ৭: প্যাসিভ ইনকাম</a></li>
+            <li><a href="#challenge"><i class="fas fa-calendar-check"></i> ৩০ দিনের চ্যালেঞ্জ</a></li>
+            <li><a href="#conclusion"><i class="fas fa-flag-checkered"></i> উপসংহার</a></li>
+            <li><a href="#back-cover"><i class="fas fa-shopping-cart"></i> সংগ্রহ করুন</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+
+        <section id="cover" class="book-page">
+            <div style="font-size: 4rem; color: #f1c40f; margin-bottom: 20px;"><i class="fas fa-clock"></i></div>
+            <h1>প্রতিদিন ১০ মিনিট!</h1>
+            <div class="subtitle">অনলাইন থেকে সহজ আয়</div>
+            <p style="text-align: center; color: #ddd;">ছাত্র, চাকরিজীবী ও গৃহিণীদের জন্য স্মার্টফোন দিয়ে আয়ের পূর্ণাঙ্গ গাইডলাইন</p>
+            
+            <div class="author-name">
+                <hr style="width: 50px; margin: 20px auto; border-color: rgba(255,255,255,0.5);">
+                লেখক: মঞ্জুরুল হক
+            </div>
+        </section>
+
+        <section class="book-page" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 600px;">
+            <p><strong>স্বত্ব © ২০২৫ মঞ্জুরুল হক</strong></p>
+            <p>সর্বস্বত্ব সংরক্ষিত। লেখকের অনুমতি ব্যতীত এই বইয়ের কোনো অংশ পুনমুদ্রণ বা ব্যবহার করা আইনত দণ্ডনীয়।</p>
+            <br>
+            <p style="font-style: italic;">"উৎসর্গ: সেই সকল মানুষদের, যারা বিশ্বাস করে—সময়ের সঠিক ব্যবহারই ভাগ্য বদলাতে পারে।"</p>
+        </section>
+
+        <section id="intro" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">ভূমিকা</span> ১০ মিনিটের জাদুকরী শক্তি</h2>
+            <p>
+                "সময়ের অভাব"—এই অজুহাত আমাদের সবার। আমরা বলি আমাদের হাতে সময় নেই, অথচ প্রতিদিন জ্যামে বসে, চায়ের আড্ডায়, কিংবা রাতে ঘুমানোর আগে ফেসবুকে স্ক্রল করে আমরা ঘণ্টার পর ঘণ্টা সময় নষ্ট করি।
+            </p>
+            <div class="highlight-box">
+                আমরা কি জানি, প্রতিদিন মাত্র ১০ মিনিট সময় অপচয় না করে সঠিক জায়গায় বিনিয়োগ করলে মাস শেষে তা একটি সম্মানজনক আয়ের উৎস হতে পারে?
+            </div>
+            <p>
+                এই বই কোনো 'রাতারাতি বড়লোক' হওয়ার ফানুস নয়। এটি একটি গাইডলাইন, কীভাবে একজন ব্যস্ত মানুষ (ছাত্র, চাকরিজীবী বা গৃহিণী) তার স্মার্টফোনটি ব্যবহার করে প্রতিদিনের ১০ মিনিট সময়কে কাজে লাগিয়ে অনলাইনে নিজের অবস্থান তৈরি করতে পারেন। আপনার পকেটের স্মার্টফোনটি কেবল বিনোদনের যন্ত্র নয়, এটি একটি আয়ের মাধ্যম। চলুন, সেই যাত্রাই শুরু করা যাক।
+            </p>
+        </section>
+
+        <section id="chap1" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ১</span> মানসিক প্রস্তুতি ও সতর্কতা</h2>
+            <p>অনলাইনে আয়ের কথা শুনলেই অনেকে মনে করেন কোনো 'জাদুর কাঠি' আছে যা দিয়ে ক্লিক করলেই টাকা আসবে। লেখক মঞ্জুরুল হক এখানে বাস্তবতা তুলে ধরেছেন।</p>
+            
+            <h3>স্ক্যাম থেকে সাবধান!</h3>
+            <p>যেখানেই দেখবেন "বিনিয়োগ করলেই দ্বিগুণ লাভ" বা "কোনো কাজ ছাড়াই আয়"—সেখান থেকে ১০ হাত দূরে থাকুন। আসল অনলাইন ইনকামে পরিশ্রম লাগে, টাকা লাগে না।</p>
+
+            <h3>ধৈর্যই আসল পুঁজি</h3>
+            <p>প্রথম দিনেই হাজার টাকা আসবে না। ১০ মিনিটের অভ্যেসটি গড়ে তোলাই আসল চ্যালেঞ্জ। প্রথম এক মাস হয়তো কোনো আয় হবে না, কিন্তু দক্ষতা তৈরি হবে।</p>
+
+            <h3>প্রয়োজনীয় উপকরণ</h3>
+            <ul>
+                <li>✅ একটি সাধারণ স্মার্টফোন।</li>
+                <li>✅ মোটামুটি গতির ইন্টারনেট সংযোগ।</li>
+                <li>✅ পেমেন্ট নেওয়ার জন্য বিকাশ, নগদ বা রকেট অ্যাকাউন্ট।</li>
+            </ul>
+        </section>
+
+        <section id="chap2" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ২</span> মাইক্রো-টাস্কিং: ছোট কাজে আয়</h2>
+            <p>যাদের কোনো বিশেষ দক্ষতা (যেমন গ্রাফিক ডিজাইন বা কোডিং) নেই, তারা কীভাবে আয় করবেন? উত্তর হলো—মাইক্রো টাস্কিং।</p>
+            
+            <h3>কাজগুলো আসলে কী?</h3>
+            <p>বড় কোম্পানিগুলো তাদের ছোট ছোট কাজ মানুষের মাধ্যমে করিয়ে নেয়। যেমন: গুগল ম্যাপে রিভিউ দেওয়া, কোনো অ্যাপ ডাউনলোড করে টেস্ট করা, ইউটিউব ভিডিও দেখা, বা ছোট সার্ভে পূরণ করা।</p>
+
+            <h3>কোথায় কাজ পাবেন?</h3>
+            <p><strong>SproutGigs (সাবেক Picoworkers)</strong> এবং <strong>Microworkers</strong> হলো সবচেয়ে জনপ্রিয় সাইট। এখানে অ্যাকাউন্ট খুলতে কোনো টাকা লাগে না। প্রতিদিন ১০ মিনিট সময় দিয়ে ২-৩টি ছোট কাজ করলে মাস শেষে ইন্টারনেট বিল ও হাতখরচ উঠে আসবে সহজেই।</p>
+        </section>
+
+        <section id="chap3" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ৩</span> স্মার্টফোন ফটোগ্রাফি</h2>
+            <p>আপনার গ্যালারিতে জমে থাকা প্রকৃতি, খাবার বা শহরের ছবিগুলোই হতে পারে ডলার আয়ের উৎস। ডিএসএলআর ক্যামেরা লাগবে না, ভালো কম্পোজিশনই যথেষ্ট।</p>
+            
+            <h3>Shutterstock ও অন্যান্য সাইট</h3>
+            <p>Shutterstock, Adobe Stock বা Alamy-তে কন্ট্রিবিউটর অ্যাকাউন্ট খুলুন। এটি সম্পূর্ণ ফ্রি।</p>
+
+            <div class="highlight-box">
+                <strong>টিপস:</strong> মানুষের চেহারার ছবি না তুলে টেক্সচার, গ্রামবাংলার প্রকৃতি, রাস্তার ব্যস্ততা বা খাবারের সুন্দর ছবি তুলুন। এই ছবিগুলোর চাহিদা বিশ্বজুড়ে।
+            </div>
+            
+            <h3>১০ মিনিটের রুটিন</h3>
+            <p>প্রতিদিন মাত্র ১টি ভালো ছবি তুলুন, সামান্য এডিট করুন এবং আপলোড করুন। মাসে ৩০টি ছবি জমা হলে, বছর শেষে ৩৬৫টি ছবি আপনার জন্য আয় করতে থাকবে—যখন আপনি ঘুমাচ্ছেন।</p>
+        </section>
+
+        <section id="chap4" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ৪</span> এফিলিয়েট মার্কেটিং (Smart Sharing)</h2>
+            <p>পণ্য তৈরি করার ঝামেলার দরকার নেই। অন্যের পণ্য বিক্রি করে কমিশন নেওয়াই হলো এফিলিয়েট মার্কেটিং।</p>
+            
+            <h3>সহজ পদ্ধতি</h3>
+            <p>অ্যামাজন অ্যাসোসিয়েট বা দারাজ এফিলিয়েট প্রোগ্রামে যোগ দিন। এরপর আপনার পছন্দের কোনো গ্যাজেট বা বইয়ের রিভিউ লিখুন ফেসবুকে বা হোয়াটসঅ্যাপ গ্রুপে।</p>
+
+            <h3>১০ মিনিটের কাজ</h3>
+            <p>সারাদিন লিংক শেয়ার না করে, প্রতিদিন ১০ মিনিট সময় নিয়ে একটি সুন্দর, তথ্যবহুল পোস্ট লিখুন। কমেন্টে আপনার লিংকটি দিন। মানুষ যখন আপনার কথায় বিশ্বাস করে পণ্যটি কিনবে, আপনি কমিশন পাবেন।</p>
+        </section>
+
+        <section id="chap5" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ৫</span> কন্টেন্ট ক্রিয়েশন: শর্টস ও রিলস</h2>
+            <p>মানুষ এখন বড় ভিডিও দেখার চেয়ে ৬০ সেকেন্ডের রিলস বা শর্টস দেখতে পছন্দ করে। এটি বর্তমানে ভাইরাল হওয়ার সবচেয়ে সহজ মাধ্যম।</p>
+            
+            <h3>কী নিয়ে ভিডিও বানাবেন?</h3>
+            <ul>
+                <li>রান্নার ছোট টিপস বা রেসিপি।</li>
+                <li>বইয়ের রিভিউ (যেমন এই বইটি)।</li>
+                <li>মজার ঘটনা বা কমেডি।</li>
+                <li>শিক্ষামূলক তথ্য (যেমন: ইংরেজির নতুন শব্দ)।</li>
+            </ul>
+
+            <p><strong>১০ মিনিটের ব্রেকডাউন:</strong> ৫ মিনিট স্ক্রিপ্ট ভাবুন, ৩ মিনিট ভিডিও শুট করুন, ২ মিনিট এডিট করে আপলোড দিন। ধারাবাহিকতা থাকলে সাফল্য নিশ্চিত।</p>
+        </section>
+
+        <section id="chap6" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ৬</span> স্কিল ডেভেলপমেন্ট (শেখার ১০ মিনিট)</h2>
+            <p>তাৎক্ষণিক আয়ের চেয়ে দীর্ঘমেয়াদী আয়ের জন্য এই অধ্যায়টি সবচেয়ে গুরুত্বপূর্ণ। লেখক মঞ্জুরুল হকের মতে, <strong>"আজকের ১০ মিনিট শেখা, আগামীকালের ১০ হাজার টাকার সমান।"</strong></p>
+            
+            <h3>কী শিখবেন?</h3>
+            <ul>
+                <li><strong>Canva:</strong> গ্রাফিক ডিজাইনের জন্য। টেমপ্লেট বিক্রি করে আয় করা যায়।</li>
+                <li><strong>English:</strong> ফ্রিল্যান্সিং করতে ইংরেজির বিকল্প নেই।</li>
+                <li><strong>Data Entry:</strong> এক্সেলে দক্ষতা বাড়ান।</li>
+            </ul>
+        </section>
+
+        <section id="chap7" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">অধ্যায় ৭</span> প্যাসিভ ইনকাম: একবার কাজ, বারবার আয়</h2>
+            <p>আমরা এতক্ষণ যে পদ্ধতিগুলো (ফটোগ্রাফি, এফিলিয়েট, ভিডিও) নিয়ে আলোচনা করেছি, তার মূল লক্ষ্য হলো প্যাসিভ ইনকাম।</p>
+            <p>অ্যাক্টিভ ইনকাম হলো—কাজ করলেন, টাকা পেলেন। কাজ বন্ধ, টাকা বন্ধ।<br>
+            কিন্তু প্যাসিভ ইনকাম হলো—আপনি একটি ছবি আপলোড করলেন বা ভিডিও বানালেন। সেটি ৫ বছর পরেও কেউ দেখলে বা কিনলে আপনার অ্যাকাউন্টে টাকা ঢুকবে।</p>
+            <p>প্রতিদিন ১০ মিনিট বিনিয়োগ করে আমরা আসলে আমাদের ভবিষ্যতের জন্য একটি <strong>'অর্থনৈতিক চারাগাছ'</strong> রোপণ করছি।</p>
+        </section>
+
+        <section id="challenge" class="book-page">
+            <h2 class="chapter-header" style="color: #c0392b;"><span class="chapter-number">অ্যাকশন প্ল্যান</span> ৩০ দিনের চ্যালেঞ্জ</h2>
+            <p>বই পড়ে রেখে দিলে কোনো লাভ হবে না। তাই আপনার জন্য রইল 'প্রজেক্ট ১০ মিনিট'।</p>
+
+            <div class="challenge-box">
+                <ul>
+                    <li><strong>১ম সপ্তাহ (প্রস্তুতি):</strong> বইয়ের যেকোনো ১টি পদ্ধতি বেছে নিন। অ্যাকাউন্ট খুলুন। ইউটিউবে টিউটোরিয়াল দেখুন।</li>
+                    <li><strong>২য় সপ্তাহ (অ্যাকশন):</strong> প্রতিদিন ১০ মিনিট কাজ করুন। ফলাফলের আশা করবেন না, শুধু কাজ জমা দিন।</li>
+                    <li><strong>৩য় সপ্তাহ (বিশ্লেষণ):</strong> নিজের ভুলগুলো খুঁজে বের করুন এবং কাজের মান বাড়ান।</li>
+                    <li><strong>৪র্থ সপ্তাহ (অভ্যাস):</strong> ১০ মিনিটকে ১৫ মিনিটে উন্নীত করুন। এটি এখন আপনার লাইফস্টাইলের অংশ।</li>
+                </ul>
+            </div>
+            <p style="text-align: center; font-weight: bold;">"থেমে যাওয়া মানেই হেরে যাওয়া নয়, হাল ছেড়ে দেওয়া মানেই হেরে যাওয়া।"</p>
+        </section>
+
+        <section id="conclusion" class="book-page">
+            <h2 class="chapter-header"><span class="chapter-number">উপসংহার</span> আজকের ১০ মিনিট, আগামীর স্বাধীনতা</h2>
+            <p>প্রিয় পাঠক, আমরা বইয়ের শেষ পাতায় চলে এসেছি।</p>
+            <p>পৃথিবীর সফলতম মানুষরাও একদিন শূন্য থেকে শুরু করেছিলেন। তাদের আর আপনার মধ্যে পার্থক্য কেবল একটি—<strong>'শুরু করা' এবং 'লেগে থাকা'</strong>।</p>
+            <p>আপনার হাতে থাকা স্মার্টফোনটি দিয়ে আপনি পৃথিবী জয় করতে পারেন, অথবা কেবল অন্যের বিনোদনের দর্শক হয়ে জীবন পার করে দিতে পারেন। চয়েস আপনার। অনলাইনের এই বিশাল মহাসাগরে আপনার তরী ভাসানোর এখনই সেরা সময়।</p>
+            <br>
+            <p style="text-align: right;">
+                আপনার অনলাইন যাত্রার সঙ্গী,<br>
+                <strong>মঞ্জুরুল হক</strong>
+            </p>
+        </section>
+
+        <section id="back-cover" class="book-page">
+            <h2>বইটি ভালো লেগেছে?</h2>
+            <p>আপনার বন্ধুদের সাথে শেয়ার করুন অথবা লেখকের অন্যান্য কোর্সগুলো দেখতে ভিজিট করুন।</p>
+            
+            <br>
+            <i class="fas fa-book-reader" style="font-size: 3rem; margin-bottom: 20px;"></i>
+            
+            <p>ঘরে বসে বইটি পেতে বা লেখকের সাথে কথা বলতে:</p>
+            <a href="tel:01715247588" class="cta-btn"><i class="fas fa-phone"></i> কল করুন: 01715-247588</a>
+            <br><br>
+            <a href="https://economist-bd.github.io/demand-supply" style="color: #fff; text-decoration: underline;">ওয়েবসাইট ভিজিট করুন</a>
+            
+            <div style="margin-top: 50px; font-size: 0.8rem; opacity: 0.7;">
+                #OnlineIncome #Freelancing #PassiveIncome #BookLovers #MonjurulHaque
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
